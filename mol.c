@@ -118,6 +118,10 @@ void molappend_atom(molecule *molecule, atom *newAtom) {
         //Exiting the program if realloc fails
         if((molecule->atoms == NULL) || (molecule->atom_ptrs == NULL)) {
             exit(1);
+        } else {
+            for(int i = 0; i < molecule->atom_no; i++) {
+                molecule->atom_ptrs[i] = &(molecule->atoms[i]);
+            }
         }
     }
 
@@ -143,6 +147,10 @@ void molappend_bond(molecule *molecule, bond *newBond) {
         //Exiting the program if realloc fails
         if((molecule->bonds== NULL) || (molecule->bond_ptrs == NULL)) {
             exit(1);
+        } else {
+            for(int i = 0; i < molecule->bond_no; i++) {
+                molecule->bond_ptrs[i] = &(molecule->bonds[i]);
+            }
         }
     }
 
