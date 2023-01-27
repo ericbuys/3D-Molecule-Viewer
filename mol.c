@@ -32,8 +32,13 @@ void bondget(bond *bond, atom **a1, atom **a2, unsigned char *epairs) {
     *epairs = bond->epairs;
 }
 
+//Allocates space for a molecule
 molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
     molecule *newMol = malloc(sizeof(molecule));
+
+    if(newMol == NULL) {
+        return NULL;
+    }
 
     newMol->atom_max = atom_max;
     newMol->atom_no = 0;
@@ -42,42 +47,108 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
 
     newMol->atoms = malloc(sizeof(atom) * atom_max);
     newMol->atom_ptrs = malloc(sizeof(atom*) * atom_max);
+   
+    if((newMol->atoms == NULL) || (newMol->atom_ptrs == NULL)) {
+        return NULL;
+    } 
+
     for(int i = 0; i < atom_max; i++) {
         newMol->atom_ptrs[i] = &(newMol->atoms[i]);
     }
 
     newMol->bonds = malloc(sizeof(bond) * bond_max);
     newMol->bond_ptrs = malloc(sizeof(bond*) * bond_max);
-    for(int i = 0; i < bond_max; i++) {
-        newMol->bonds[i].a1 = malloc(sizeof(atom));
-        newMol->bonds[i].a2 = malloc(sizeof(atom));
+    
+    if((newMol->bonds == NULL) || (newMol->bond_ptrs == NULL)) {
+        return NULL;
+    }
 
+    for(int i = 0; i < bond_max; i++) {
         newMol->bond_ptrs[i] = &(newMol->bonds[i]);
     }
 
     return newMol;
 }
 
-//??????????
-molecule *molcopy(molecule *src) {
+/*
+copy contents of arrays insie molecule asweel (atoms and bonds array not the _ptr ones)
+*/
+//molecule *molcopy(molecule *src) {
+    /*
     molecule *newMol = molmalloc(src->atom_max, src->bond_max);
-    
+    if(newMol == NULL) {
+        return NULL;
+    }
+
     newMol->atom_no = src->atom_no;
     newMol->bond_no = src->bond_no;
 
+    for(int i = 0; i < newMol->atom_no; i++) {
+        newMol->atoms[i] = src->atoms[i];
+    }
+
+    for(int i = 0; i < newMol->bond_no; i++) {
+        newMol->bonds[i] = src->bonds[i];
+    }
+
     return newMol;
-}
+    */
+//}
 
 void molfree(molecule *ptr) {
     free(ptr->atoms);
     free(ptr->atom_ptrs);
-
-    for(int i = 0; i < ptr->bond_max; i++) {
-        free(ptr->bonds[i].a1);
-        free(ptr->bonds[i].a2);
-    }
     free(ptr->bonds);
     free(ptr->bond_ptrs);
-
     free(ptr);
+}
+
+void molappend_atom(molecule *molecule, atom *newAtom) {
+    //Incrementing atom_max if necessary
+    if(molecule->atom_no == molecule->atom_max) {
+        if(molecule->atom_max == 0) {
+            molecule->atom_max = 1;
+        } else {
+            molecule->atom_max *= 2;
+        }
+
+        //Reallocating space for atoms and atom_ptrs
+        molecule->atoms = realloc(molecule->atoms, sizeof(atom)*(molecule->atom_max));
+        molecule->atom_ptrs = realloc(molecule->atom_ptrs, sizeof(atom*)*(molecule->atom_max));
+        
+        //Exiting the program if realloc fails
+        if((molecule->atoms == NULL) || (molecule->atom_ptrs == NULL)) {
+            exit(1);
+        }
+    }
+
+    //Updating atom information into the molecule
+    molecule->atoms[molecule->atom_no] = *newAtom;
+    molecule->atom_ptrs[molecule->atom_no] = &(molecule->atoms[molecule->atom_no]);
+    molecule->atom_no += 1;
+}
+
+void molappend_bond(molecule *molecule, bond *newBond) {
+    //Incrementing atom_max if necessary
+    if(molecule->bond_no == molecule->bond_max) {
+        if(molecule->bond_max == 0) {
+            molecule->bond_max = 1;
+        } else {
+            molecule->bond_max *= 2;
+        }
+
+        //Reallocating space for atoms and atom_ptrs
+        molecule->bonds = realloc(molecule->bonds, sizeof(bond)*(molecule->bond_max));
+        molecule->bond_ptrs = realloc(molecule->bond_ptrs, sizeof(bond*)*(molecule->bond_max));
+        
+        //Exiting the program if realloc fails
+        if((molecule->bonds== NULL) || (molecule->bond_ptrs == NULL)) {
+            exit(1);
+        }
+    }
+
+    //Updating atom information into the molecule
+    molecule->bonds[molecule->bond_no] = *newBond;
+    molecule->bond_ptrs[molecule->bond_no] = &(molecule->bonds[molecule->bond_no]);
+    molecule->bond_no += 1;
 }

@@ -1,3 +1,6 @@
+#ifndef HEADER_FILE
+#define HEADER_FILE
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -47,3 +50,5 @@ typedef struct rotations {
 
 rotations *spin(molecule *mol);
 void rotationsfree(rotations *rotations);
+
+#endif

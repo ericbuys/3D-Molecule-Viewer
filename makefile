@@ -1,10 +1,19 @@
-CFLAGS = -std=c99 -Wall -pedantic
+CC = clang
+CFLAGS = -Wall -std=c99 -pedantic
+
+all: test1
 
 libmol.so: mol.o
-	gcc mol.o $(CFLAGS) -shared -o libmol.so
+	$(CC) $(CFLAGS) mol.o -shared -o libmol.so
 
 mol.o: mol.c mol.h
-	gcc $(CFLAGS) -fpic -c mol.c
+	$(CC) $(CFLAGS) -fpic -c mol.c -o mol.o
 
-clean:
-	rm *.o *.so
+test1.o: test1.c mol.h
+	$(CC) $(CFLAGS) -c test1.c -o test1.o
+
+test1: test1.o libmol.so
+	$(CC) $(CFLAGS) test1.o -L. -lmol -o test1
+
+clean: 
+	rm *.o *.so test1
