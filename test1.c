@@ -87,8 +87,8 @@ int main( int argc, char **argv )
   bondset( &bond2, &(molecule->atoms[0]), &(molecule->atoms[2]), 1 );
 
   /* add the bonds */
-  //molappend_bond( molecule, &bond1 );
-  //molappend_bond( molecule, &bond2 );
+  molappend_bond( molecule, &bond1 );
+  molappend_bond( molecule, &bond2 );
 
   display_mol( molecule );
   molfree( molecule );

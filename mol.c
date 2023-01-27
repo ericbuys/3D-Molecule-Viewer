@@ -73,8 +73,8 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
 /*
 copy contents of arrays insie molecule asweel (atoms and bonds array not the _ptr ones)
 */
-//molecule *molcopy(molecule *src) {
-    /*
+molecule *molcopy(molecule *src) {
+    
     molecule *newMol = molmalloc(src->atom_max, src->bond_max);
     if(newMol == NULL) {
         return NULL;
@@ -84,16 +84,15 @@ copy contents of arrays insie molecule asweel (atoms and bonds array not the _pt
     newMol->bond_no = src->bond_no;
 
     for(int i = 0; i < newMol->atom_no; i++) {
-        newMol->atoms[i] = src->atoms[i];
+        molappend_atom(newMol, &(src->atoms[i]));
     }
 
     for(int i = 0; i < newMol->bond_no; i++) {
-        newMol->bonds[i] = src->bonds[i];
+        molappend_bond(newMol, &(src->bonds[i]));
     }
 
     return newMol;
-    */
-//}
+}
 
 void molfree(molecule *ptr) {
     free(ptr->atoms);
@@ -129,7 +128,7 @@ void molappend_atom(molecule *molecule, atom *newAtom) {
 }
 
 void molappend_bond(molecule *molecule, bond *newBond) {
-    //Incrementing atom_max if necessary
+    //Incrementing bond_max if necessary
     if(molecule->bond_no == molecule->bond_max) {
         if(molecule->bond_max == 0) {
             molecule->bond_max = 1;
@@ -137,7 +136,7 @@ void molappend_bond(molecule *molecule, bond *newBond) {
             molecule->bond_max *= 2;
         }
 
-        //Reallocating space for atoms and atom_ptrs
+        //Reallocating space for bonds and bond_ptrs
         molecule->bonds = realloc(molecule->bonds, sizeof(bond)*(molecule->bond_max));
         molecule->bond_ptrs = realloc(molecule->bond_ptrs, sizeof(bond*)*(molecule->bond_max));
         
@@ -147,7 +146,7 @@ void molappend_bond(molecule *molecule, bond *newBond) {
         }
     }
 
-    //Updating atom information into the molecule
+    //Updating bond information into the molecule
     molecule->bonds[molecule->bond_no] = *newBond;
     molecule->bond_ptrs[molecule->bond_no] = &(molecule->bonds[molecule->bond_no]);
     molecule->bond_no += 1;
