@@ -22,4 +22,4 @@ test2: test2.o libmol.so
 	$(CC) $(CFLAGS) test2.o -L. -lmol -o test2
 
 clean: 
-	rm *.o *.so test1
+	rm *.o *.so test1 test2

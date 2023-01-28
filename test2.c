@@ -131,7 +131,7 @@ int main( int argc, char **argv )
   display_mol( molecule );
 
   printf( "\nSorting molecule\n\n" );
-  //molsort( molecule );
+  molsort( molecule );
 
   display_mol( molecule );
 

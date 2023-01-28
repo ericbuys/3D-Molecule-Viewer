@@ -41,6 +41,10 @@ void yrotation(xform_matrix xform_matrix, unsigned short deg);
 void zrotation(xform_matrix xform_matrix, unsigned short deg);
 void mol_xform(molecule *molecule, xform_matrix matrix);
 
+//Helper Functions
+int atom_cmp(const void *a, const void *b);
+int bond_cmp(const void *a, const void *b);
+
 //Nightmare Mode
 typedef struct rotations {
     molecule *x[72];

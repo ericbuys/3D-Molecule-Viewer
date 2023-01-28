@@ -102,7 +102,7 @@ void molfree(molecule *ptr) {
     free(ptr);
 }
 
-void molappend_atom(molecule *molecule, atom *newAtom) {
+void molappend_atom(molecule *molecule, atom *atom) {
     //Incrementing atom_max if necessary
     if(molecule->atom_no == molecule->atom_max) {
         if(molecule->atom_max == 0) {
@@ -112,8 +112,8 @@ void molappend_atom(molecule *molecule, atom *newAtom) {
         }
 
         //Reallocating space for atoms and atom_ptrs
-        molecule->atoms = realloc(molecule->atoms, sizeof(atom)*(molecule->atom_max));
-        molecule->atom_ptrs = realloc(molecule->atom_ptrs, sizeof(atom*)*(molecule->atom_max));
+        molecule->atoms = realloc(molecule->atoms, sizeof(struct atom)*(molecule->atom_max));
+        molecule->atom_ptrs = realloc(molecule->atom_ptrs, sizeof(struct atom*)*(molecule->atom_max));
         
         //Exiting the program if realloc fails
         if((molecule->atoms == NULL) || (molecule->atom_ptrs == NULL)) {
@@ -126,12 +126,12 @@ void molappend_atom(molecule *molecule, atom *newAtom) {
     }
 
     //Updating atom information into the molecule
-    molecule->atoms[molecule->atom_no] = *newAtom;
+    molecule->atoms[molecule->atom_no] = *atom;
     molecule->atom_ptrs[molecule->atom_no] = &(molecule->atoms[molecule->atom_no]);
     molecule->atom_no += 1;
 }
 
-void molappend_bond(molecule *molecule, bond *newBond) {
+void molappend_bond(molecule *molecule, bond *bond) {
     //Incrementing bond_max if necessary
     if(molecule->bond_no == molecule->bond_max) {
         if(molecule->bond_max == 0) {
@@ -141,8 +141,8 @@ void molappend_bond(molecule *molecule, bond *newBond) {
         }
 
         //Reallocating space for bonds and bond_ptrs
-        molecule->bonds = realloc(molecule->bonds, sizeof(bond)*(molecule->bond_max));
-        molecule->bond_ptrs = realloc(molecule->bond_ptrs, sizeof(bond*)*(molecule->bond_max));
+        molecule->bonds = realloc(molecule->bonds, sizeof(struct bond)*(molecule->bond_max));
+        molecule->bond_ptrs = realloc(molecule->bond_ptrs, sizeof(struct bond*)*(molecule->bond_max));
         
         //Exiting the program if realloc fails
         if((molecule->bonds== NULL) || (molecule->bond_ptrs == NULL)) {
@@ -155,7 +155,45 @@ void molappend_bond(molecule *molecule, bond *newBond) {
     }
 
     //Updating bond information into the molecule
-    molecule->bonds[molecule->bond_no] = *newBond;
+    molecule->bonds[molecule->bond_no] = *bond;
     molecule->bond_ptrs[molecule->bond_no] = &(molecule->bonds[molecule->bond_no]);
     molecule->bond_no += 1;
+}
+
+void molsort(molecule *molecule) {
+    qsort(molecule->atom_ptrs, molecule->atom_no, sizeof(struct atom*), atom_cmp);
+    qsort(molecule->bond_ptrs, molecule->bond_no, sizeof(struct bond*), bond_cmp);
+}
+
+int atom_cmp(const void *a, const void *b) {
+    atom *a_ptr, *b_ptr;
+    
+    a_ptr = *(struct atom **)a;
+    b_ptr = *(struct atom **)b;
+
+    if(a_ptr->z > b_ptr->z) {
+        return 1;
+    } else if (a_ptr->z == b_ptr->z) {
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+int bond_cmp(const void *a, const void *b) {
+    bond *a_ptr, *b_ptr;
+    
+    a_ptr = *(struct bond **)a;
+    b_ptr = *(struct bond **)b;
+
+    double a_ptrAvg = (a_ptr->a1->z + a_ptr->a2->z)/2;
+    double b_ptrAvg = (b_ptr->a1->z + b_ptr->a2->z)/2;
+
+    if(a_ptrAvg > b_ptrAvg) {
+        return 1;
+    } else if (a_ptrAvg == b_ptrAvg) {
+        return 0;
+    } else {
+        return -1;
+    }
 }
