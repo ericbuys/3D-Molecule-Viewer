@@ -1,6 +1,6 @@
 #include "mol.h"
 
-//Copys the values in element, x, y, and z into atom
+//Sets the values of an atom
 void atomset(atom *atom, char element[3], double *x, double *y, double *z) {
     strcpy(atom->element, element);
 
@@ -9,7 +9,7 @@ void atomset(atom *atom, char element[3], double *x, double *y, double *z) {
     atom->z = *z;
 }
 
-//Copys the values in atom to element, x, y and z
+//Gets the values of an atom (pass by reference)
 void atomget(atom *atom, char element[3], double *x, double *y, double *z) {
     strcpy(element, atom->element);
 
@@ -18,49 +18,54 @@ void atomget(atom *atom, char element[3], double *x, double *y, double *z) {
     *z = atom->z;
 }
 
-//Copys the values in a1, a2 and epairs into bond
+//Sets the values of a bond
 void bondset(bond *bond, atom *a1, atom *a2, unsigned char epairs) {
     bond->a1 = a1;
     bond->a2 = a2;
     bond->epairs = epairs;
 }
 
-//Copys the values in bond to a1, a2 and epairs
+//Gets the values of a bond (pass by reference)
 void bondget(bond *bond, atom **a1, atom **a2, unsigned char *epairs) {
     *a1 = bond->a1;
     *a2 = bond->a2;
     *epairs = bond->epairs;
 }
 
-//Allocates space for a molecule
+//Allocates sufficient space for a molecule
 molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
+    //Attempting to allocate space for the molecule
     molecule *newMol = malloc(sizeof(molecule));
-
     if(newMol == NULL) {
         return NULL;
     }
 
+    //Assigning default atom,bond counter values
     newMol->atom_max = atom_max;
     newMol->atom_no = 0;
     newMol->bond_max = bond_max;
     newMol->bond_no = 0;
 
+    //Attempting to allocate space for the atom component
     newMol->atoms = malloc(sizeof(atom) * atom_max);
     newMol->atom_ptrs = malloc(sizeof(atom*) * atom_max);
-   
     if((newMol->atoms == NULL) || (newMol->atom_ptrs == NULL)) {
+        freemol(newMol);
         return NULL;
     } 
 
-    for(int i = 0; i < atom_max; i++) {
-        newMol->atom_ptrs[i] = &(newMol->atoms[i]);
-    }
-
+    //Attempting to allocate space for the bond component
     newMol->bonds = malloc(sizeof(bond) * bond_max);
     newMol->bond_ptrs = malloc(sizeof(bond*) * bond_max);
-    
     if((newMol->bonds == NULL) || (newMol->bond_ptrs == NULL)) {
+        freemol(newMol);
         return NULL;
+    }
+
+
+    //Assigning bond/atom ptrs to corresponding bonds/atoms array
+    for(int i = 0; i < atom_max; i++) {
+        newMol->atom_ptrs[i] = &(newMol->atoms[i]);
     }
 
     for(int i = 0; i < bond_max; i++) {
@@ -70,19 +75,20 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
     return newMol;
 }
 
-/*
-copy contents of arrays insie molecule asweel (atoms and bonds array not the _ptr ones)
-*/
+//Copys the contents of the src molecule into a duplicate molecule
 molecule *molcopy(molecule *src) {
+    //Attempting to allocate space for a new molecule
     molecule *newMol = molmalloc(src->atom_max, src->bond_max);
     if(newMol == NULL) {
         return NULL;
     }
 
+    //Appending all the atoms
     for(int i = 0; i < src->atom_no; i++) {
         molappend_atom(newMol, &(src->atoms[i]));
     }
 
+    //Appending all the bonds
     for(int i = 0; i < src->bond_no; i++) {
         molappend_bond(newMol, &(src->bonds[i]));
     }
@@ -90,6 +96,7 @@ molecule *molcopy(molecule *src) {
     return newMol;
 }
 
+//Freeing a molecule
 void molfree(molecule *ptr) {
     free(ptr->atoms);
     free(ptr->atom_ptrs);
@@ -98,6 +105,7 @@ void molfree(molecule *ptr) {
     free(ptr);
 }
 
+//Appends an atom into the next available spot in a molecule
 void molappend_atom(molecule *molecule, atom *atom) {
     //Incrementing atom_max if necessary
     if(molecule->atom_no == molecule->atom_max) {
@@ -127,6 +135,7 @@ void molappend_atom(molecule *molecule, atom *atom) {
     molecule->atom_no += 1;
 }
 
+//Appends an bond into the next available spot in a molecule
 void molappend_bond(molecule *molecule, bond *bond) {
     //Incrementing bond_max if necessary
     if(molecule->bond_no == molecule->bond_max) {
