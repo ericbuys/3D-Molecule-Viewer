@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif 
 
 //Structs
 typedef struct atom {
@@ -44,6 +49,7 @@ void mol_xform(molecule *molecule, xform_matrix matrix);
 //Helper Functions
 int atom_cmp(const void *a, const void *b);
 int bond_cmp(const void *a, const void *b);
+double degToRad(unsigned short deg);
 
 //Nightmare Mode
 typedef struct rotations {

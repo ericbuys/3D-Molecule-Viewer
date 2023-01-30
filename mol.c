@@ -74,20 +74,16 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
 copy contents of arrays insie molecule asweel (atoms and bonds array not the _ptr ones)
 */
 molecule *molcopy(molecule *src) {
-    
     molecule *newMol = molmalloc(src->atom_max, src->bond_max);
     if(newMol == NULL) {
         return NULL;
     }
 
-    newMol->atom_no = src->atom_no;
-    newMol->bond_no = src->bond_no;
-
-    for(int i = 0; i < newMol->atom_no; i++) {
+    for(int i = 0; i < src->atom_no; i++) {
         molappend_atom(newMol, &(src->atoms[i]));
     }
 
-    for(int i = 0; i < newMol->bond_no; i++) {
+    for(int i = 0; i < src->bond_no; i++) {
         molappend_bond(newMol, &(src->bonds[i]));
     }
 
@@ -195,5 +191,71 @@ int bond_cmp(const void *a, const void *b) {
         return 0;
     } else {
         return -1;
+    }
+}
+
+double degToRad(unsigned short deg) {
+    return deg * PI / 180;
+}
+
+void xrotation(xform_matrix xform_matrix, unsigned short deg) {
+    double rad = degToRad(deg);
+
+    xform_matrix[0][0] = 1;
+    xform_matrix[0][1] = 0;
+    xform_matrix[0][2] = 0;
+
+    xform_matrix[1][0] = 0;
+    xform_matrix[1][1] = cos(rad);
+    xform_matrix[1][2] = -sin(rad);
+
+    xform_matrix[2][0] = 0;
+    xform_matrix[2][1] = sin(rad);
+    xform_matrix[2][2] = cos(rad);
+}
+
+void yrotation(xform_matrix xform_matrix, unsigned short deg) {
+    double rad = degToRad(deg);
+
+    xform_matrix[0][0] = cos(rad);
+    xform_matrix[0][1] = 0;
+    xform_matrix[0][2] = sin(rad);
+
+    xform_matrix[1][0] = 0;
+    xform_matrix[1][1] = 1;
+    xform_matrix[1][2] = 0;
+
+    xform_matrix[2][0] = -sin(rad);
+    xform_matrix[2][1] = 0;
+    xform_matrix[2][2] = cos(rad);
+}
+
+void zrotation(xform_matrix xform_matrix, unsigned short deg) {
+    double rad = degToRad(deg);
+
+    xform_matrix[0][0] = cos(rad);
+    xform_matrix[0][1] = -sin(rad);
+    xform_matrix[0][2] = 0;
+
+    xform_matrix[1][0] = sin(rad);
+    xform_matrix[1][1] = cos(rad);
+    xform_matrix[1][2] = 0;
+
+    xform_matrix[2][0] = 0;
+    xform_matrix[2][1] = 0;
+    xform_matrix[2][2] = 1;
+}
+
+void mol_xform(molecule *molecule, xform_matrix matrix) {
+    double newX, newY, newZ;
+
+    for (int i = 0; i < molecule->atom_no; i++) {
+        newX = molecule->atoms[i].x * matrix[0][0] + molecule->atoms[i].y * matrix[0][1] + molecule->atoms[i].z * matrix[0][2];
+        newY = molecule->atoms[i].x * matrix[1][0] + molecule->atoms[i].y * matrix[1][1] + molecule->atoms[i].z * matrix[1][2];
+        newZ = molecule->atoms[i].x * matrix[2][0] + molecule->atoms[i].y * matrix[2][1] + molecule->atoms[i].z * matrix[2][2];
+
+        molecule->atoms[i].x = newX;
+        molecule->atoms[i].y = newY;
+        molecule->atoms[i].z = newZ;
     }
 }
