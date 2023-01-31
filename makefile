@@ -1,7 +1,7 @@
 CC = clang
 CFLAGS = -Wall -std=c99 -pedantic
 
-all: lobmol.so
+all: libmol.so
 
 libmol.so: mol.o
 	$(CC) $(CFLAGS) mol.o -shared -o libmol.so
@@ -38,4 +38,4 @@ omegaTest: test6.o libmol.so
 	$(CC) $(CFLAGS) test6.o -L. -lmol -lm -o omegaTest
 
 clean: 
-	rm *.o *.so test1 test2 test3
+	rm *.o *.so test1 test2 test3 omegaTest
