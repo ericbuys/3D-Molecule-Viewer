@@ -2,8 +2,13 @@
 
 //Sets the values of an atom
 void atomset(atom *atom, char element[3], double *x, double *y, double *z) {
+    //Checking if the atom to set is NULL
+    if(atom == NULL) {
+        return;
+    }
+    
+    //Setting the values in the atom
     strcpy(atom->element, element);
-
     atom->x = *x;
     atom->y = *y;
     atom->z = *z;
@@ -11,8 +16,13 @@ void atomset(atom *atom, char element[3], double *x, double *y, double *z) {
 
 //Gets the values of an atom (pass by reference)
 void atomget(atom *atom, char element[3], double *x, double *y, double *z) {
+    //Checking if the atom to set is NULL
+    if(atom == NULL) {
+        return;
+    }
+    
+    //Getting the values from the atom
     strcpy(element, atom->element);
-
     *x = atom->x;
     *y = atom->y;
     *z = atom->z;
@@ -50,7 +60,7 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
     newMol->atoms = malloc(sizeof(atom) * atom_max);
     newMol->atom_ptrs = malloc(sizeof(atom*) * atom_max);
     if((newMol->atoms == NULL) || (newMol->atom_ptrs == NULL)) {
-        freemol(newMol);
+        molfree(newMol);
         return NULL;
     } 
 
@@ -58,10 +68,9 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
     newMol->bonds = malloc(sizeof(bond) * bond_max);
     newMol->bond_ptrs = malloc(sizeof(bond*) * bond_max);
     if((newMol->bonds == NULL) || (newMol->bond_ptrs == NULL)) {
-        freemol(newMol);
+        molfree(newMol);
         return NULL;
     }
-
 
     //Assigning bond/atom ptrs to corresponding bonds/atoms array
     for(int i = 0; i < atom_max; i++) {
@@ -77,6 +86,11 @@ molecule *molmalloc(unsigned short atom_max, unsigned short bond_max) {
 
 //Copys the contents of the src molecule into a duplicate molecule
 molecule *molcopy(molecule *src) {
+    //Checking if a null molecule was passed
+    if(src == NULL) {
+        return NULL;
+    }
+
     //Attempting to allocate space for a new molecule
     molecule *newMol = molmalloc(src->atom_max, src->bond_max);
     if(newMol == NULL) {
@@ -93,20 +107,38 @@ molecule *molcopy(molecule *src) {
         molappend_bond(newMol, &(src->bonds[i]));
     }
 
+    //Reassinging which atoms the bonds point to in the newMol
+    int indexA1, indexA2;
+
+    for(int i = 0; i < src->bond_no; i++) {
+        indexA1 = (src->bonds[i].a1 - src->atoms);
+        indexA2 = (src->bonds[i].a2 - src->atoms);
+
+        newMol->bonds[i].a1 = &newMol->atoms[indexA1];
+        newMol->bonds[i].a2 = &newMol->atoms[indexA2];
+    }
+
     return newMol;
 }
 
 //Freeing a molecule
 void molfree(molecule *ptr) {
-    free(ptr->atoms);
-    free(ptr->atom_ptrs);
-    free(ptr->bonds);
-    free(ptr->bond_ptrs);
-    free(ptr);
+    if(ptr != NULL) {
+        free(ptr->atoms);
+        free(ptr->atom_ptrs);
+        free(ptr->bonds);
+        free(ptr->bond_ptrs);
+        free(ptr);
+    }
 }
 
 //Appends an atom into the next available spot in a molecule
 void molappend_atom(molecule *molecule, atom *atom) {
+    //Returning if the passed molecule is NULL since an atom cannot be appended
+    if(molecule == NULL) {
+        return;
+    }
+
     //Incrementing atom_max if necessary
     if(molecule->atom_no == molecule->atom_max) {
         if(molecule->atom_max == 0) {
@@ -115,16 +147,33 @@ void molappend_atom(molecule *molecule, atom *atom) {
             molecule->atom_max *= 2;
         }
 
+        struct atom *oldAddr = molecule->atoms;
+
         //Reallocating space for atoms and atom_ptrs
         molecule->atoms = realloc(molecule->atoms, sizeof(struct atom)*(molecule->atom_max));
         molecule->atom_ptrs = realloc(molecule->atom_ptrs, sizeof(struct atom*)*(molecule->atom_max));
         
         //Exiting the program if realloc fails
         if((molecule->atoms == NULL) || (molecule->atom_ptrs == NULL)) {
+            molfree(molecule);
             exit(1);
         } else {
+            //Reassigning atom ptrs for when realloc moves the atoms array
             for(int i = 0; i < molecule->atom_no; i++) {
                 molecule->atom_ptrs[i] = &(molecule->atoms[i]);
+            }
+        }
+
+        //Reassigning bonds if address of atoms was moved due to realloc
+        if(oldAddr != molecule->atoms) {
+            int indexA1, indexA2;
+
+            for(int i = 0; i < molecule->bond_no; i++) {
+                indexA1 = (molecule->bonds[i].a1 - oldAddr);
+                indexA2 = (molecule->bonds[i].a2 - oldAddr);
+
+                molecule->bonds[i].a1 = &molecule->atoms[indexA1];
+                molecule->bonds[i].a2 = &molecule->atoms[indexA2];
             }
         }
     }
@@ -151,8 +200,10 @@ void molappend_bond(molecule *molecule, bond *bond) {
         
         //Exiting the program if realloc fails
         if((molecule->bonds== NULL) || (molecule->bond_ptrs == NULL)) {
+            molfree(molecule);
             exit(1);
         } else {
+            //Reassigning bond ptrs for when realloc moves the atoms array
             for(int i = 0; i < molecule->bond_no; i++) {
                 molecule->bond_ptrs[i] = &(molecule->bonds[i]);
             }
@@ -165,11 +216,13 @@ void molappend_bond(molecule *molecule, bond *bond) {
     molecule->bond_no += 1;
 }
 
+//Sorts the atom_ptrs and bond_ptrs array in a molecule
 void molsort(molecule *molecule) {
     qsort(molecule->atom_ptrs, molecule->atom_no, sizeof(struct atom*), atom_cmp);
     qsort(molecule->bond_ptrs, molecule->bond_no, sizeof(struct bond*), bond_cmp);
 }
 
+//Atom compare function for qsort
 int atom_cmp(const void *a, const void *b) {
     atom *a_ptr, *b_ptr;
     
@@ -185,6 +238,7 @@ int atom_cmp(const void *a, const void *b) {
     }
 }
 
+//Bond compare function for qsort
 int bond_cmp(const void *a, const void *b) {
     bond *a_ptr, *b_ptr;
     
@@ -203,10 +257,12 @@ int bond_cmp(const void *a, const void *b) {
     }
 }
 
+//Converts a given degree to radians
 double degToRad(unsigned short deg) {
     return deg * PI / 180;
 }
 
+//Sets the xform_matrix with an x rotation by deg degrees
 void xrotation(xform_matrix xform_matrix, unsigned short deg) {
     double rad = degToRad(deg);
 
@@ -223,6 +279,7 @@ void xrotation(xform_matrix xform_matrix, unsigned short deg) {
     xform_matrix[2][2] = cos(rad);
 }
 
+//Sets the xform_matrix with an y rotation by deg degrees
 void yrotation(xform_matrix xform_matrix, unsigned short deg) {
     double rad = degToRad(deg);
 
@@ -239,6 +296,7 @@ void yrotation(xform_matrix xform_matrix, unsigned short deg) {
     xform_matrix[2][2] = cos(rad);
 }
 
+//Sets the xform_matrix with an z rotation by deg degrees
 void zrotation(xform_matrix xform_matrix, unsigned short deg) {
     double rad = degToRad(deg);
 
@@ -255,6 +313,7 @@ void zrotation(xform_matrix xform_matrix, unsigned short deg) {
     xform_matrix[2][2] = 1;
 }
 
+//Performs a rotation given by xform_matrix on each atom in the molecule
 void mol_xform(molecule *molecule, xform_matrix matrix) {
     double newX, newY, newZ;
 
@@ -267,4 +326,67 @@ void mol_xform(molecule *molecule, xform_matrix matrix) {
         molecule->atoms[i].y = newY;
         molecule->atoms[i].z = newZ;
     }
+}
+
+//Create and setup a rotations structure
+rotations *spin(molecule *mol) {
+    //Checking if passed mol is valid
+    if(mol == NULL) {
+        return NULL;
+    }
+
+    //Attempting to allocate a rotation structure
+    rotations *rotMols = malloc(sizeof(struct rotations));
+    if(rotMols == NULL) {
+        return NULL;
+    }
+
+    xform_matrix xrot, yrot, zrot;
+    int currDeg;
+
+    for(int i = 0; i < ROTATION_SIZE; i++) {
+        //Allocating space for each molecule
+        rotMols->x[i] = molcopy(mol);
+        rotMols->y[i] = molcopy(mol);
+        rotMols->z[i] = molcopy(mol);
+
+        //Checking if the molcopys worked
+        if(rotMols->x[i] == NULL || rotMols->y[i] == NULL || rotMols->z[i] == NULL) {
+            
+            //Freeing prior malloced memory
+            for(int j = 0; j <= i; j++) {
+                molfree(rotMols->x[j]);
+                molfree(rotMols->y[j]);
+                molfree(rotMols->z[j]);
+            }
+
+            free(rotMols);
+            return NULL;
+        }
+
+
+        currDeg = i*5;
+
+        xrotation(xrot, currDeg);
+        yrotation(yrot, currDeg);
+        zrotation(zrot, currDeg);
+
+        mol_xform(rotMols->x[i], xrot);
+        mol_xform(rotMols->y[i], yrot);
+        mol_xform(rotMols->z[i], zrot);
+    }
+
+    return rotMols;
+}
+
+//Frees the complete rotation struct
+void rotationsfree(rotations *rotations) {
+    //Freeing each molecule in the rotations struct
+    for (int i = 0; i < ROTATION_SIZE; i++) {
+        molfree(rotations->x[i]);
+        molfree(rotations->y[i]);
+        molfree(rotations->z[i]);
+    }
+
+    free(rotations);
 }

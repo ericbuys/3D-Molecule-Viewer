@@ -10,6 +10,10 @@
 #define PI 3.14159265358979323846
 #endif 
 
+#ifndef ROTATION_SIZE
+#define ROTATION_SIZE 72
+#endif
+
 //Structs
 typedef struct atom {
     char element[3];
@@ -53,9 +57,9 @@ double degToRad(unsigned short deg);
 
 //Nightmare Mode
 typedef struct rotations {
-    molecule *x[72];
-    molecule *y[72];
-    molecule *z[72];
+    molecule *x[ROTATION_SIZE];
+    molecule *y[ROTATION_SIZE];
+    molecule *z[ROTATION_SIZE];
 } rotations;
 
 rotations *spin(molecule *mol);
