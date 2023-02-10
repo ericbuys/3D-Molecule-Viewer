@@ -1,4 +1,4 @@
- 1                      atomset 1  0
+ 1                      atomset 1  1
  2                      atomset 2  1
  3           atomset 2 + valgrind  1
  4                      atomget 1  1
@@ -45,4 +45,4 @@
 45                       comments  2
 46                    indentation  2
 ====================================
-Total:                         49/50
+Total:                         50/50

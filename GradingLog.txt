@@ -17,7 +17,7 @@ Compiling
    Found test01
    Compilation succeeded
 Running test01
-   Fail!
+   Pass!
 
 Test case 02 (atomset 2)
 Compiling
