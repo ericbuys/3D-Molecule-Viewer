@@ -1,0 +1,597 @@
+Looking for files   Found mol.c
+   Found mol.h
+   Found makefile
+Compiling
+   clang -std=c99 -Wall -pedantic -c mol.c -fPIC -o mol.o 1>> compile.out 2>> compile.err
+   clang -std=c99 -Wall -pedantic mol.o -shared -o libmol.so 1>> compile.out 2>> compile.err
+Looking for targets
+   Found libmol.so
+   Compilation succeeded
+
+Beginning testing
+=================
+
+Test case 01 (atomset 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test01.c -lm -L. -lmol -o test01 1>> compile.out 2>> compile.err
+   Found test01
+   Compilation succeeded
+Running test01
+   Pass!
+
+Test case 02 (atomset 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test02.c -lm -L. -lmol -o test02 1>> compile.out 2>> compile.err
+   Found test02
+   Compilation succeeded
+Running test02
+   Pass!
+
+Test case 03 (atomset 2 + valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test03.c -lm -L. -lmol -o test03 1>> compile.out 2>> compile.err
+   Found test03
+   Compilation succeeded
+Running test03
+   Pass!
+
+Test case 04 (atomget 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test04.c -lm -L. -lmol -o test04 1>> compile.out 2>> compile.err
+   Found test04
+   Compilation succeeded
+Running test04
+   Pass!
+
+Test case 05 (atomget 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test05.c -lm -L. -lmol -o test05 1>> compile.out 2>> compile.err
+   Found test05
+   Compilation succeeded
+Running test05
+   Pass!
+
+Test case 06 (atomget 2 + valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test06.c -lm -L. -lmol -o test06 1>> compile.out 2>> compile.err
+   Found test06
+   Compilation succeeded
+Running test06
+   Pass!
+
+Test case 07 (bondset 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test07.c -lm -L. -lmol -o test07 1>> compile.out 2>> compile.err
+   Found test07
+   Compilation succeeded
+Running test07
+   Pass!
+
+Test case 08 (bondset 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test08.c -lm -L. -lmol -o test08 1>> compile.out 2>> compile.err
+   Found test08
+   Compilation succeeded
+Running test08
+   Pass!
+
+Test case 08 (bondset 2 + valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test09.c -lm -L. -lmol -o test09 1>> compile.out 2>> compile.err
+   Found test09
+   Compilation succeeded
+Running test09
+   Pass!
+
+Test case 10 (bondget 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test10.c -lm -L. -lmol -o test10 1>> compile.out 2>> compile.err
+   Found test10
+   Compilation succeeded
+Running test10
+   Pass!
+
+Test case 11 (bondget 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test11.c -lm -L. -lmol -o test11 1>> compile.out 2>> compile.err
+   Found test11
+   Compilation succeeded
+Running test11
+   Pass!
+
+Test case 12 (bondget 2 (with valgrind))
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test12.c -lm -L. -lmol -o test12 1>> compile.out 2>> compile.err
+   Found test12
+   Compilation succeeded
+Running test12
+   Pass!
+
+Test case 13 (molmalloc 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test13.c -lm -L. -lmol -o test13 1>> compile.out 2>> compile.err
+   Found test13
+   Compilation succeeded
+Running test13
+   Pass!
+
+Test case 14 (molmalloc 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test14.c -lm -L. -lmol -o test14 1>> compile.out 2>> compile.err
+   Found test14
+   Compilation succeeded
+Running test14
+   Pass!
+
+Test case 15 (molmalloc 2 (with valgrind))
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test15.c -lm -L. -lmol -o test15 1>> compile.out 2>> compile.err
+   Found test15
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+
+Running test15
+   Pass!
+
+Test case 16 (molcopy 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test16.c -lm -L. -lmol -o test16 1>> compile.out 2>> compile.err
+   Found test16
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+
+Running test16
+   Pass!
+
+Test case 17 (molcopy 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test17.c -lm -L. -lmol -o test17 1>> compile.out 2>> compile.err
+   Found test17
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+
+Running test17
+   Pass!
+
+Test case 18 (molcopy 2 +valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test18.c -lm -L. -lmol -o test18 1>> compile.out 2>> compile.err
+   Found test18
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test18
+   Pass!
+
+Test case 19 (molfree 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test19.c -lm -L. -lmol -o test19 1>> compile.out 2>> compile.err
+   Found test19
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test19
+   Pass!
+
+Test case 20 (molfree 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test20.c -lm -L. -lmol -o test20 1>> compile.out 2>> compile.err
+   Found test20
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test20
+   Pass!
+
+Test case 20 (molfree 2 +valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test21.c -lm -L. -lmol -o test21 1>> compile.out 2>> compile.err
+   Found test21
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test21
+   Pass!
+
+Test case 22 (molappend_atom 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test22.c -lm -L. -lmol -o test22 1>> compile.out 2>> compile.err
+   Found test22
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test22
+   Pass!
+
+Test case 23 (molappend_atom 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test23.c -lm -L. -lmol -o test23 1>> compile.out 2>> compile.err
+   Found test23
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test23
+   Pass!
+
+Test case 24 (molappend_atom 2+valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test24.c -lm -L. -lmol -o test24 1>> compile.out 2>> compile.err
+   Found test24
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test24
+   Pass!
+
+Test case 25 (molappend_bond 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test25.c -lm -L. -lmol -o test25 1>> compile.out 2>> compile.err
+   Found test25
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test25
+   Pass!
+
+Test case 26 (molappend_bond 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test26.c -lm -L. -lmol -o test26 1>> compile.out 2>> compile.err
+   Found test26
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test26
+   Pass!
+
+Test case 27 (molappend_bond 2+valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test27.c -lm -L. -lmol -o test27 1>> compile.out 2>> compile.err
+   Found test27
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test27
+   Pass!
+
+Test case 28 (molsort 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test28.c -lm -L. -lmol -o test28 1>> compile.out 2>> compile.err
+   Found test28
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test28
+   Pass!
+
+Test case 29 (molsort 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test29.c -lm -L. -lmol -o test29 1>> compile.out 2>> compile.err
+   Found test29
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test29
+   Pass!
+
+Test case 30 (molsort 2+valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test30.c -lm -L. -lmol -o test30 1>> compile.out 2>> compile.err
+   Found test30
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test30
+   Pass!
+
+Test case 31 (xrotation 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test31.c -lm -L. -lmol -o test31 1>> compile.out 2>> compile.err
+   Found test31
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test31
+   Pass!
+
+Test case 32 (xrotation 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test32.c -lm -L. -lmol -o test32 1>> compile.out 2>> compile.err
+   Found test32
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test32
+   Pass!
+
+Test case 33 (xrotation 3)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test33.c -lm -L. -lmol -o test33 1>> compile.out 2>> compile.err
+   Found test33
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test33
+   Pass!
+
+Test case 34 (yrotation 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test34.c -lm -L. -lmol -o test34 1>> compile.out 2>> compile.err
+   Found test34
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test34
+   Pass!
+
+Test case 35 (yrotation 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test35.c -lm -L. -lmol -o test35 1>> compile.out 2>> compile.err
+   Found test35
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test35
+   Pass!
+
+Test case 36 (yrotation 3)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test36.c -lm -L. -lmol -o test36 1>> compile.out 2>> compile.err
+   Found test36
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test36
+   Pass!
+
+Test case 37 (zrotation 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test37.c -lm -L. -lmol -o test37 1>> compile.out 2>> compile.err
+   Found test37
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test37
+   Pass!
+
+Test case 38 (zrotation 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test38.c -lm -L. -lmol -o test38 1>> compile.out 2>> compile.err
+   Found test38
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test38
+   Pass!
+
+Test case 39 (zrotation 3)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test39.c -lm -L. -lmol -o test39 1>> compile.out 2>> compile.err
+   Found test39
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test39
+   Pass!
+
+Test case 40 (mol_xform 1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test40.c -lm -L. -lmol -o test40 1>> compile.out 2>> compile.err
+   Found test40
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test40
+   Pass!
+
+Test case 41 (mol_xform 2)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test41.c -lm -L. -lmol -o test41 1>> compile.out 2>> compile.err
+   Found test41
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test41
+   Pass!
+
+Test case 42 (mol_xform 3)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A1/test42.c -lm -L. -lmol -o test42 1>> compile.out 2>> compile.err
+   Found test42
+   Compilation generated errors:
+   /home/socs/Grading//TestSuites/A1/test15.c:52:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol );
+  ^
+1 warning generated.
+/home/socs/Grading//TestSuites/A1/test18.c:95:3: warning: implicit declaration of function 'molfree' is invalid in C99 [-Wimplicit-function-declaration]
+  molfree( mol1 );
+  ^
+1 warning generated.
+
+Running test42
+   Pass!
+Found makefile
+Correct options
+Comments
+Indentation levels are: ['', '    ', '        ', '            ', '                ']
+Code is indented
+Assignment submitted by Eric Buys <ebuys@uoguelph.ca>
+   at: Tue Jan 31 01:01:17 2023
+   0 hours late
+   0 points penalty
