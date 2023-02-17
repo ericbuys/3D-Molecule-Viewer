@@ -22,11 +22,5 @@ part1Test: part1Test.o libmol.so
 part1Test.o: part1Test.c mol.h
 	$(CC) $(CFLAGS) -c part1Test.c -o part1Test.o
 
-part2Test: part2Test.o libmol.so
-	$(CC) $(CFLAGS) part2Test.o -L. -lmol -lm -o part2Test
-
-part1Test.o: part1Test.c mol.h
-	$(CC) $(CFLAGS) -c part2Test.c -o part2Test.o
-
 clean: 
 	rm *.o *.so part1Test
