@@ -105,18 +105,17 @@ class Molecule(molecule.molecule):
 
         for i in range(atomNum):
             atomContents = fileContents[4 + i].split()
-            print(atomContents)
+            #print(atomContents)
             self.append_atom(atomContents[3], float(atomContents[0]), float(atomContents[1]), float(atomContents[2]))
         for i in range(bondNum):
             bondContents = fileContents[4 + atomNum + i].split()
-            print(bondContents)
+            #print(bondContents)
             self.append_bond(int(bondContents[0]), int(bondContents[1]), int(bondContents[2]))
 
         file.close()
 
-
 if __name__ == "__main__":
-    file = open("caffeine-3D-structure-CT1001987571.sdf", "r")
+    file = open("water-3D-structure-CT1000292221.sdf", "r")
     mol = Molecule()
     mol.parse(file)
     molecule.molsort(mol)
