@@ -16,11 +16,8 @@ _molecule.so: molecule_wrap.o
 molecule_wrap.o: molecule_wrap.c
 	$(CC) $(CFLAGS) -fPIC -I/usr/include/python3.7m -c molecule_wrap.c -o molecule_wrap.o
 
-part1Test: part1Test.o libmol.so
-	$(CC) $(CFLAGS) part1Test.o -L. -lmol -lm -o part1Test
-
-part1Test.o: part1Test.c mol.h
-	$(CC) $(CFLAGS) -c part1Test.c -o part1Test.o
+molecule_wrap.c: molecule.i
+	swig3.0 -python molecule.i
 
 clean: 
-	rm *.o *.so part1Test
+	rm *.o *.so molecule_wrap.c molecule.py

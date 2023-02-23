@@ -99,20 +99,28 @@ class Molecule(molecule.molecule):
     
     def parse(self, file):
         fileContents = file.read().split("\n")
+        if(len(fileContents) < 4):
+            return
+
         molCounts = fileContents[3].split()
+        if(len(molCounts) < 2):
+            return
+
         atomNum = int(molCounts[0])
         bondNum = int(molCounts[1])
 
         for i in range(atomNum):
             atomContents = fileContents[4 + i].split()
-            #print(atomContents)
             self.append_atom(atomContents[3], float(atomContents[0]), float(atomContents[1]), float(atomContents[2]))
         for i in range(bondNum):
             bondContents = fileContents[4 + atomNum + i].split()
-            #print(bondContents)
             self.append_bond(int(bondContents[0]), int(bondContents[1]), int(bondContents[2]))
 
         file.close()
+    
+    def rotate(self, roll, pitch, yaw):
+        self.rotateMol(roll, pitch, yaw)
+
 
 if __name__ == "__main__":
     file = open("water-3D-structure-CT1000292221.sdf", "r")
