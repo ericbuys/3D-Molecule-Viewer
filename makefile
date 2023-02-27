@@ -20,4 +20,4 @@ molecule_wrap.c: molecule.i
 	swig3.0 -python molecule.i
 
 clean: 
-	rm *.o *.so molecule_wrap.c molecule.py
+	rm *.o *.so
