@@ -18,9 +18,11 @@ footer = """</svg>""";
 offsetx = 500;
 offsety = 500;
 
+#Compute x coordinate for the svg
 def xCoordSVG(x):
     return x*100.0 + offsetx
 
+#Compute y coordinate for the svg
 def yCoordSVG(y):
     return y*100.0 + offsety
 
@@ -77,13 +79,16 @@ class Molecule(molecule.molecule):
         while(i < self.atom_no and j < self.bond_no):
             a1 = Atom(self.get_atom(i))
             b1 = Bond(self.get_bond(j))
+
+            #Adding atoms/bonds in a sequential z order
             if a1.z < b1.z:
                 tempList.append(a1.svg())
                 i += 1
-            else: # b1.z < a1.z
+            else:
                 tempList.append(b1.svg())
                 j += 1
 
+        #Appending remaining atoms/bonds
         while(i < self.atom_no):
             a1 = Atom(self.get_atom(i))
             tempList.append(a1.svg())
@@ -99,16 +104,20 @@ class Molecule(molecule.molecule):
     
     def parse(self, file):
         fileContents = file.read().split("\n")
+        
+        #Checking if too few lines are passed
         if(len(fileContents) < 4):
             return
-
+        
+        #Checking if a valid number of atomno and bondno are passed
         molCounts = fileContents[3].split()
         if(len(molCounts) < 2):
             return
 
         atomNum = int(molCounts[0])
         bondNum = int(molCounts[1])
-
+        
+        #Adding atoms and bonds to molecule
         for i in range(atomNum):
             atomContents = fileContents[4 + i].split()
             self.append_atom(atomContents[3], float(atomContents[0]), float(atomContents[1]), float(atomContents[2]))
@@ -117,6 +126,7 @@ class Molecule(molecule.molecule):
             self.append_bond(int(bondContents[0]), int(bondContents[1]), int(bondContents[2]))
 
         file.close()
+        self.sort()
     
     def rotate(self, roll, pitch, yaw):
         self.rotateMol(roll, pitch, yaw)

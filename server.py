@@ -28,11 +28,6 @@ class MyHandler( BaseHTTPRequestHandler ):
             reader = self.rfile.read(length).decode('utf-8').split("\n")
             wrapper = io.TextIOWrapper(io.BufferedReader(io.BytesIO(bytes(("\n".join(reader[4:])), 'utf-8'))))
 
-            #i = 0
-            #for line in reader:
-            #    print(i, ": ", line)
-            #    i += 1
-
             #Parsing sdf file
             mol = MolDisplay.Molecule()
             mol.parse(wrapper)
@@ -65,8 +60,6 @@ class MyHandler( BaseHTTPRequestHandler ):
                     yaw = 0
 
                 mol.rotate(roll, pitch, yaw)
-                #print(roll, pitch, yaw)
-                #print(rollOffset, pitchOffset, yawOffset)
 
             #Outputting molecule to server
             molecule.molsort(mol)
