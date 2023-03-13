@@ -55,6 +55,7 @@ class MyHandler( BaseHTTPRequestHandler ):
                     yaw = 0
 
                 mol.rotate(roll, pitch, yaw)
+                print(roll, pitch, yaw)
 
             #Outputting molecule to server
             molecule.molsort(mol)
