@@ -29,8 +29,8 @@ class Atom:
 
 class Bond:
     def __init__(self, bond: molecule.bond):
-        self.bond = bond
-        self.z = bond.z
+        self.bond = bond;
+        self.z = bond.z;
     
     def __str__(self):
         return """%d: %d %d %d %f %f %f %f %f %f %f""" % (self.z, self.bond.a1, self.bond.a2, self.bond.epairs, self.bond.x1, self.bond.y1, self.bond.x2, self.bond.y2, self.bond.len, self.bond.dx, self.bond.dy)
