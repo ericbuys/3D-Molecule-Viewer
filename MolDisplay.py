@@ -25,7 +25,7 @@ class Atom:
         rad = radius[self.atom.element]
         col = element_name[self.atom.element]
 
-        return '  <circle cx="%.2f" cy="%.2f" r="%d" fill="%s"/>\n' % (xCoord, yCoord, rad, col)
+        return '  <circle cx="%.2f" cy="%.2f" r="%d" fill="url(#%s)"/>\n' % (xCoord, yCoord, rad, col)
 
 class Bond:
     def __init__(self, bond: molecule.bond):

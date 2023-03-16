@@ -158,6 +158,82 @@ class Database:
         #Insert Bonds
         for i in range(mol.bond_no):
             self.add_bond(name, mol.get_bond(i));
+    
+    def load_mol(self, name):
+        mol = MolDisplay.Molecule();
+
+        #Retrieveing Atom and Bond Data
+        atomData = self.conn.execute("""    SELECT Atoms.ELEMENT_CODE, Atoms.X, Atoms.Y, Atoms.Z
+                                            FROM Molecules, MoleculeAtom, Atoms
+                                            WHERE (Molecules.NAME = ? AND MoleculeAtom.MOLECULE_ID = Molecules.MOLECULE_ID
+                                            AND Atoms.ATOM_ID = MoleculeAtom.ATOM_ID)
+                                            ORDER BY Atoms.ATOM_ID
+                                    """, (name,))
+        atomData = atomData.fetchall()
+
+        bondData = self.conn.execute("""    SELECT Bonds.A1, Bonds.A2, Bonds.EPAIRS
+                                            FROM Molecules, MoleculeBond, Bonds
+                                            WHERE (Molecules.NAME = ? AND MoleculeBond.MOLECULE_ID = Molecules.MOLECULE_ID
+                                            AND Bonds.BOND_ID = MoleculeBond.BOND_ID)
+                                            ORDER BY Bonds.BOND_ID
+                                    """, (name,))
+        bondData = bondData.fetchall()
+
+        #Appending Atoms & Bonds to the Molecule Object
+        for atom in atomData:
+            mol.append_atom(atom[0], atom[1], atom[2], atom[3])
+        
+        for bond in bondData:
+            mol.append_bond(bond[0], bond[1], bond[2]);
+
+        return mol;
+    
+    def radius(self):
+        #Retrieve Radius Data from Table
+        radiusData = self.conn.execute("""  SELECT Elements.ELEMENT_CODE, Elements.RADIUS
+                                            FROM Elements
+                                    """)
+        radiusData = radiusData.fetchall()
+
+        #Add Radius data to dictionary
+        radiusDict = {}
+        for radius in radiusData:
+            radiusDict[radius[0]] = radius[1];
+
+        return radiusDict
+    
+    def element_name(self):
+        #Retrieve Element Data from Table
+        elementData = self.conn.execute(""" SELECT Elements.ELEMENT_CODE, Elements.ELEMENT_NAME
+                                            FROM Elements
+                                    """)
+        elementData = elementData.fetchall()
+
+        #Add Radius data to dictionary
+        elementDict = {}
+        for element in elementData:
+            elementDict[element[0]] = element[1];
+
+        return elementDict
+    
+    def radial_gradients(self):
+        #Retrieving Element Info from table
+        elementData = self.conn.execute(""" SELECT Elements.ELEMENT_NAME, Elements.COLOUR1, Elements.COLOUR2, Elements.COLOUR3
+                                            FROM Elements
+                                        """)
+        elementData = elementData.fetchall();
+
+        #Appending element svg tag to string
+        radialGradientSVG = "";
+        for element in elementData:
+            radialGradientSVG += """
+            <radialGradient id="%s" cx="-50%%" cy="-50%%" r="220%%" fx="20%%" fy="20%%">
+                <stop offset="0%%" stop-color="#%s"/>
+                <stop offset="50%%" stop-color="#%s"/>
+                <stop offset="100%%" stop-color="#%s"/>
+            </radialGradient>""" % (element[0], element[1], element[2], element[3]);
+        
+        return radialGradientSVG
         
 
 
@@ -174,20 +250,30 @@ if __name__ == "__main__":
     #connection = sqlite3.connect("molecules.db");
     #print(connection.execute( """SELECT * FROM Elements;""" ).fetchall())
     fp = open( 'water-3D-structure-CT1000292221.sdf' );
-    db.add_molecule( 'Water', fp );
-    '''
+    db.add_molecule( 'Water', fp );3
     fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
     db.add_molecule( 'Caffeine', fp );
     fp = open( 'CID_31260.sdf' );
     db.add_molecule( 'Isopentanol', fp );
-    '''
     # display tables
+    
     print( db.conn.execute( "SELECT * FROM Elements;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Molecules;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Atoms;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Bonds;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeAtom;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeBond;" ).fetchall() );
+
+    db = Database(reset=False); # or use default
+    MolDisplay.radius = db.radius();
+    MolDisplay.element_name = db.element_name();
+    MolDisplay.header += db.radial_gradients();
+    for molecule in [ 'Water', 'Caffeine', 'Isopentanol' ]:
+        mol = db.load_mol( molecule );
+        mol.sort();
+        fp = open( molecule + ".svg", "w" );
+        fp.write( mol.svg() );
+        fp.close();
     
 
 
