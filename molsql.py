@@ -235,11 +235,6 @@ class Database:
         
         return radialGradientSVG
         
-
-
-
-
-
 if __name__ == "__main__":
     db = Database(reset=True);
     db.create_tables();
@@ -249,26 +244,32 @@ if __name__ == "__main__":
     db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
     #connection = sqlite3.connect("molecules.db");
     #print(connection.execute( """SELECT * FROM Elements;""" ).fetchall())
+    
     fp = open( 'water-3D-structure-CT1000292221.sdf' );
-    db.add_molecule( 'Water', fp );3
+    db.add_molecule( 'Water', fp );
+
     fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
     db.add_molecule( 'Caffeine', fp );
+
+
     fp = open( 'CID_31260.sdf' );
     db.add_molecule( 'Isopentanol', fp );
+
     # display tables
-    
+    '''
     print( db.conn.execute( "SELECT * FROM Elements;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Molecules;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Atoms;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Bonds;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeAtom;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeBond;" ).fetchall() );
-
+    '''
     db = Database(reset=False); # or use default
     MolDisplay.radius = db.radius();
     MolDisplay.element_name = db.element_name();
     MolDisplay.header += db.radial_gradients();
-    for molecule in [ 'Water', 'Caffeine', 'Isopentanol' ]:
+    #for molecule in [ 'Water', 'Caffeine', 'Isopentanol']:
+    for molecule in ['Water', 'Caffeine', 'Isopentanol']:
         mol = db.load_mol( molecule );
         mol.sort();
         fp = open( molecule + ".svg", "w" );

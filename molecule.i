@@ -24,6 +24,10 @@
     bond(bond *bond) {
         return bond;
     }
+
+    atom *get_atom(unsigned short i) {
+        return &$self->atoms[i];
+    }
 };
 
 %extend molecule {
