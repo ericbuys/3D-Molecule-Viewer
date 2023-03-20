@@ -235,57 +235,6 @@ class Database:
         
         return radialGradientSVG
 
-
-# if __name__=='__main__':
-#     db = Database(True)
-#     db.create_tables()
-    
-#     db['Elements'] = ( 1, 'H', 'Hydrogen', 'FFFFFF', '050505', '020202', 25 );
-#     db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
-#     db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
-#     db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
-
-#     # db['Molecules'] = ( "Water" )
-#     # # db['Atoms'] = ('O', 2.5369, -0.1550, 0.0000)
-#     # # db['Atoms'] = ('H', 3.0739, 0.1550, 0.0000)
-#     # # db['Atoms'] = ('H', 2.0000, 0.1550, 0.0000)
-    
-#     # mol = molecule.molecule(); 
-#     # mol.append_atom( "O", 2.5369, -0.1550, 0.0000 );
-#     # mol.append_atom( "H", 3.0739, 0.1550, 0.0000 );
-#     # mol.append_atom( "H", 2.0000, 0.1550, 0.0000 );
-    
-#     # db.add_atom("Water", mol.get_atom(0));
-#     # db.add_atom("Water", mol.get_atom(1));
-#     # db.add_atom("Water", mol.get_atom(2));
-    
-#     # mol.append_bond( 1, 2, 1 );
-#     # mol.append_bond( 1, 3, 1 );
-    
-#     # db.add_bond("Water", mol.get_bond(0));
-#     # db.add_bond("Water", mol.get_bond(1));
-    
-#     fp = open( 'water-3D-structure-CT1000292221.sdf' );
-#     db.add_molecule( 'Water', fp );
-    
-#     fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
-#     db.add_molecule( 'Caffeine', fp );
-    
-#     fp = open( 'CID_31260.sdf' );
-#     db.add_molecule( 'Isopentanol', fp );
-    
-#     # db = Database()
-#     # dataMol = db.load_mol("Water")
-#     # # print(dataMol)
-    
-#     # dic = db.radius();
-#     # dic2 = db.element_name();
-#     # # print(dic)
-#     # # print(dic2)
-    
-#     # radial = db.radial_gradients();
-#     # print(radial);
-
 if __name__ == "__main__":
     db = Database(reset=True);
     db.create_tables();
@@ -293,39 +242,28 @@ if __name__ == "__main__":
     db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
     db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
     db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
-    #connection = sqlite3.connect("molecules.db");
-    #print(connection.execute( """SELECT * FROM Elements;""" ).fetchall())
-
     fp = open( 'water-3D-structure-CT1000292221.sdf' );
     db.add_molecule( 'Water', fp );
-
     fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
     db.add_molecule( 'Caffeine', fp );
-
-
     fp = open( 'CID_31260.sdf' );
     db.add_molecule( 'Isopentanol', fp );
-
     # display tables
-    '''
     print( db.conn.execute( "SELECT * FROM Elements;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Molecules;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Atoms;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM Bonds;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeAtom;" ).fetchall() );
     print( db.conn.execute( "SELECT * FROM MoleculeBond;" ).fetchall() );
-    '''
+    
     db = Database(reset=False); # or use default
     MolDisplay.radius = db.radius();
     MolDisplay.element_name = db.element_name();
     MolDisplay.header += db.radial_gradients();
-    #for molecule in [ 'Water', 'Caffeine', 'Isopentanol']:
-    for molecule in ['Isopentanol']:
+    for molecule in [ 'Water', 'Caffeine', 'Isopentanol' ]:
         mol = db.load_mol( molecule );
         mol.sort();
         fp = open( molecule + ".svg", "w" );
         fp.write( mol.svg() );
         fp.close();
-
-
 

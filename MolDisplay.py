@@ -1,12 +1,12 @@
 import molecule;
 import math;
 
-nightmareMode = True;
+nightmareMode = False;
 header = """<svg version="1.1" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">""";
 footer = """</svg>""";
 offsetx = 500;
 offsety = 500;
-bondWidth = 15;
+bondWidth = 10;
 
 def xCoordSVG(x):
     return x*100.0 + offsetx
@@ -41,6 +41,20 @@ class Bond:
     def __str__(self):
         return """%d: %d %d %d %f %f %f %f %f %f %f""" % (self.z, self.bond.a1, self.bond.a2, self.bond.epairs, self.bond.x1, self.bond.y1, self.bond.x2, self.bond.y2, self.bond.len, self.bond.dx, self.bond.dy)
 
+    #SVG method for non-nightmare mode
+    def svg(self):
+        x11 = xCoordSVG(self.bond.x1) + self.bond.dy*10
+        y11 = yCoordSVG(self.bond.y1) - self.bond.dx*10
+        x12 = xCoordSVG(self.bond.x1) - self.bond.dy*10
+        y12 = yCoordSVG(self.bond.y1) + self.bond.dx*10
+        x21 = xCoordSVG(self.bond.x2) + self.bond.dy*10
+        y21 = yCoordSVG(self.bond.y2) - self.bond.dx*10
+        x22 = xCoordSVG(self.bond.x2) - self.bond.dy*10
+        y22 = yCoordSVG(self.bond.y2) + self.bond.dx*10
+
+        return '  <polygon points="%.2f,%.2f %.2f,%.2f %.2f,%.2f %.2f,%.2f" fill="green"/>\n' % (x11, y11, x12, y12, x22, y22, x21, y21)
+
+    #SVG Method for Nightmare Mode
     def specialSVG(self, bondIndex):
         #Retrieving Essential Bond Data
         atom1 = self.bond.get_atom(self.bond.a1)
@@ -89,16 +103,7 @@ class Bond:
         x22 = p2[0] - self.bond.dy*bondWidth
         y22 = p2[1] + self.bond.dx*bondWidth
 
-        slope = (p2[1] - p1[1])/(p2[0]-p1[0])
-        slopeStr = ""
-        if(slope < 0):
-            slopeStr = "neg"
-        elif(slope > 0):
-            slopeStr = "pos"
-        else:
-            slopeStr = "eql"
-
-        cylinderSVG = '  <polygon points="%.2f,%.2f %.2f,%.2f %.2f,%.2f %.2f,%.2f" fill="url(#bond%d)" id="%s"/>\n' % (x11, y11, x12, y12, x22, y22, x21, y21, bondIndex, slopeStr)
+        cylinderSVG = '  <polygon points="%.2f,%.2f %.2f,%.2f %.2f,%.2f %.2f,%.2f" fill="url(#bond%d)"/>\n' % (x11, y11, x12, y12, x22, y22, x21, y21, bondIndex)
         
         #Getting Points for Ellipse
         ellipse = []
@@ -122,13 +127,9 @@ class Bond:
 
         ellipseSVG = '   <ellipse cx="%.2f" cy="%.2f" rx="%.2f" ry="%.2f" transform="rotate(%.2f, %.2f, %.2f)" fill="url(#cap%d)"/>\n' % (ellipse[0], ellipse[1], bondWidth, scaledAxis, theta, ellipse[0], ellipse[1], bondIndex)
 
-        #Determining Which Gradient Colours To Use
+        #Determining Which Gradient Colours To Use and how to Draw the Gradient
         stopColours = []
-        gradPoints = [0,0,0,0]
-    
-        
-            #x11 = p1[0]*2 + self.bond.dy*bondWidth
-            #y11 = p1[1]*2 - self.bond.dx*bondWidth
+        gradPoints = []
         
         slope = (p2[1] - p1[1])/(p2[0]-p1[0])
         if(slope < 0):
@@ -140,10 +141,6 @@ class Bond:
         else:
             stopColours = ["#252525", "#404040", "#252525", '#050505']
             gradPoints = [x12, y12, x11 + 2*(self.bond.dy*bondWidth), y11 - 2*(self.bond.dx*bondWidth)] 
-            #x12 = p1[0]*2 + self.bond.dy*bondWidth
-            #y12 = p1[1]*2 - self.bond.dx*bondWidth
-            
-
 
         cylinderGradient = f"""<linearGradient id="bond{bondIndex}" x1="{gradPoints[0]:.2f}" y1="{gradPoints[1]:.2f}" x2="{gradPoints[2]:.2f}" y2="{gradPoints[3]:.2f}" gradientUnits="userSpaceOnUse">
     <stop offset="0%" stop-color="{stopColours[0]}" />
