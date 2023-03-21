@@ -143,20 +143,20 @@ class Bond:
             stopColours = ["#252525", "#404040", "#252525", '#050505']
             gradPoints = [x12, y12, x11 + 2*(self.bond.dy*bondWidth), y11 - 2*(self.bond.dx*bondWidth)] 
 
-        cylinderGradient = f"""<linearGradient id="bond{bondIndex}" x1="{gradPoints[0]:.2f}" y1="{gradPoints[1]:.2f}" x2="{gradPoints[2]:.2f}" y2="{gradPoints[3]:.2f}" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="{stopColours[0]}" />
-    <stop offset="25%" stop-color="{stopColours[1]}" />
-    <stop offset="50%" stop-color="{stopColours[2]}" />
-    <stop offset="100%" stop-color="{stopColours[3]}" />
-</linearGradient>\n"""
+        cylinderGradient = f""" <linearGradient id="bond{bondIndex}" x1="{gradPoints[0]:.2f}" y1="{gradPoints[1]:.2f}" x2="{gradPoints[2]:.2f}" y2="{gradPoints[3]:.2f}" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="{stopColours[0]}" />
+                                    <stop offset="25%" stop-color="{stopColours[1]}" />
+                                    <stop offset="50%" stop-color="{stopColours[2]}" />
+                                    <stop offset="100%" stop-color="{stopColours[3]}" />
+                                </linearGradient>\n"""
 
         theta *= -1;
-        ellipseGradient = f"""<linearGradient id="cap{bondIndex}" x1="{gradPoints[0]:.2f}" y1="{gradPoints[1]:.2f}" x2="{gradPoints[2]:.2f}" y2="{gradPoints[3]:.2f}" gradientUnits="userSpaceOnUse" gradientTransform="rotate({theta:.2f},{ellipse[0]:.2f},{ellipse[1]:.2f})">
-    <stop offset="0%" stop-color="{stopColours[0]}" />
-    <stop offset="25%" stop-color="{stopColours[1]}" />
-    <stop offset="50%" stop-color="{stopColours[2]}" />
-    <stop offset="100%" stop-color="{stopColours[3]}" />
-  </linearGradient>\n"""
+        ellipseGradient = f"""  <linearGradient id="cap{bondIndex}" x1="{gradPoints[0]:.2f}" y1="{gradPoints[1]:.2f}" x2="{gradPoints[2]:.2f}" y2="{gradPoints[3]:.2f}" gradientUnits="userSpaceOnUse" gradientTransform="rotate({theta:.2f},{ellipse[0]:.2f},{ellipse[1]:.2f})">
+                                    <stop offset="0%" stop-color="{stopColours[0]}" />
+                                    <stop offset="25%" stop-color="{stopColours[1]}" />
+                                    <stop offset="50%" stop-color="{stopColours[2]}" />
+                                    <stop offset="100%" stop-color="{stopColours[3]}" />
+                                </linearGradient>\n"""
 
         return cylinderGradient + ellipseGradient + cylinderSVG + ellipseSVG;
 
