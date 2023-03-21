@@ -6,7 +6,6 @@ header = """<svg version="1.1" width="1000" height="1000" xmlns="http://www.w3.o
 footer = """</svg>""";
 offsetx = 500;
 offsety = 500;
-bondWidth = 10;
 
 def xCoordSVG(x):
     return x*100.0 + offsetx
@@ -56,6 +55,8 @@ class Bond:
 
     #SVG Method for Nightmare Mode
     def specialSVG(self, bondIndex):
+        bondWidth = 15;
+
         #Retrieving Essential Bond Data
         atom1 = self.bond.get_atom(self.bond.a1)
         atom2 = self.bond.get_atom(self.bond.a2)
@@ -235,10 +236,11 @@ class Molecule(molecule.molecule):
 
 
 if __name__ == "__main__":
-    file = open("water-3D-structure-CT1000292221.sdf", "r")
-    mol = Molecule()
-    mol.parse(file)
-    molecule.molsort(mol)
-    file = open("test.svg", "w")
-    file.write(mol.svg())
-    file.close()
+    print("You are in the Main function for MolDisplay.py")
+    # file = open("water-3D-structure-CT1000292221.sdf", "r")
+    # mol = Molecule()
+    # mol.parse(file)
+    # molecule.molsort(mol)
+    # file = open("test.svg", "w")
+    # file.write(mol.svg())
+    # file.close()

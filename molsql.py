@@ -13,6 +13,16 @@ class Database:
         
         self.conn = sqlite3.connect("molecules.db");
     
+    def __setitem__(self, table, values):
+        questionMarkStr = ", ".join(('?',)*len(values)) 
+        insertStr = f"INSERT OR IGNORE INTO {table} VALUES (" + questionMarkStr + ")";
+
+        self.conn.execute(insertStr, values);
+        self.conn.commit();
+    
+    def __del__(self):
+        self.conn.close()
+    
     def create_tables(self):
         conn = self.conn;
 
@@ -92,13 +102,8 @@ class Database:
                                 FOREIGN KEY(BOND_ID) REFERENCES Bonds  
                             );
                         """ );
-    
-    def __setitem__(self, table, values):
-        questionMarkStr = ", ".join(('?',)*len(values)) 
-        insertStr = f"INSERT INTO {table} VALUES (" + questionMarkStr + ")";
 
-        self.conn.execute(insertStr, values);
-        self.conn.commit();
+        self.conn.commit()
     
     def add_atom(self, molname, atom):
         #Adding Atom to Atoms Table
@@ -236,34 +241,36 @@ class Database:
         return radialGradientSVG
 
 if __name__ == "__main__":
-    db = Database(reset=True);
-    db.create_tables();
-    db['Elements'] = ( 1, 'H', 'Hydrogen', 'FFFFFF', '050505', '020202', 25 );
-    db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
-    db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
-    db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
-    fp = open( 'water-3D-structure-CT1000292221.sdf' );
-    db.add_molecule( 'Water', fp );
-    fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
-    db.add_molecule( 'Caffeine', fp );
-    fp = open( 'CID_31260.sdf' );
-    db.add_molecule( 'Isopentanol', fp );
-    # display tables
-    print( db.conn.execute( "SELECT * FROM Elements;" ).fetchall() );
-    print( db.conn.execute( "SELECT * FROM Molecules;" ).fetchall() );
-    print( db.conn.execute( "SELECT * FROM Atoms;" ).fetchall() );
-    print( db.conn.execute( "SELECT * FROM Bonds;" ).fetchall() );
-    print( db.conn.execute( "SELECT * FROM MoleculeAtom;" ).fetchall() );
-    print( db.conn.execute( "SELECT * FROM MoleculeBond;" ).fetchall() );
+    print("You are in the Main function for molsql.py")
+    # db = Database(reset=False);
+    # db.create_tables();
+    # db['Elements'] = ( 1, 'H', 'Hydrogen', 'FFFFFF', '050505', '020202', 25 );
+    # db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
+    # db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
+    # db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
+    # fp = open( 'water-3D-structure-CT1000292221.sdf' );
+    # db.add_molecule( 'Water', fp );
+    # fp = open( 'caffeine-3D-structure-CT1001987571.sdf' );
+    # db.add_molecule( 'Caffeine', fp );
+    # fp = open( 'CID_31260.sdf' );
+    # db.add_molecule( 'Isopentanol', fp );
+
+    # # display tables
+    # print( db.conn.execute( "SELECT * FROM Elements;" ).fetchall() );
+    # print( db.conn.execute( "SELECT * FROM Molecules;" ).fetchall() );
+    # print( db.conn.execute( "SELECT * FROM Atoms;" ).fetchall() );
+    # print( db.conn.execute( "SELECT * FROM Bonds;" ).fetchall() );
+    # print( db.conn.execute( "SELECT * FROM MoleculeAtom;" ).fetchall() );
+    # print( db.conn.execute( "SELECT * FROM MoleculeBond;" ).fetchall() );
     
-    db = Database(reset=False); # or use default
-    MolDisplay.radius = db.radius();
-    MolDisplay.element_name = db.element_name();
-    MolDisplay.header += db.radial_gradients();
-    for molecule in [ 'Water', 'Caffeine', 'Isopentanol' ]:
-        mol = db.load_mol( molecule );
-        mol.sort();
-        fp = open( molecule + ".svg", "w" );
-        fp.write( mol.svg() );
-        fp.close();
+    # db = Database(reset=False); # or use default
+    # MolDisplay.radius = db.radius();
+    # MolDisplay.element_name = db.element_name();
+    # MolDisplay.header += db.radial_gradients();
+    # for molecule in [ 'Water', 'Caffeine', 'Isopentanol']:
+    #     mol = db.load_mol( molecule );
+    #     mol.sort();
+    #     fp = open( molecule + ".svg", "w" );
+    #     fp.write( mol.svg() );
+    #     fp.close();
 
