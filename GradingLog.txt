@@ -1,0 +1,191 @@
+Looking for files
+   Found mol.c
+   Found mol.h
+   Found makefile
+Compiling
+   clang -std=c99 -Wall -pedantic -c mol.c -fPIC -o mol.o 1>> compile.out 2>> compile.err
+   clang -std=c99 -Wall -pedantic mol.o -shared -o libmol.so 1>> compile.out 2>> compile.err
+   cp /home/socs/Grading/TestSuites/A2/Support/molecule.py . 1>> compile.out 2>> compile.err
+   clang -std=c99 -Wall -pedantic -c /home/socs/Grading/TestSuites/A2/Support/molecule_wrap.c -I/usr/include/python3.7m -I. -fPIC -o molecule_wrap.o 1>> compile.out 2>> compile.err
+   clang -std=c99 -Wall -pedantic -shared molecule_wrap.o -L. -L/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu -lpython3.7m -lmol -o _molecule.so 1>> compile.out 2>> compile.err
+Looking for targets
+   Found libmol.so
+   Found _molecule.so
+   Found molecule.py
+   Compilation succeeded
+
+Beginning testing
+=================
+
+Test case 01 (bondset + valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test01.c -lm -L. -lmol -o test01 1>> compile.out 2>> compile.err
+   Found test01
+   Compilation succeeded
+Running test01
+   Pass!
+
+Test case 02 (bondget + valgrind)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test02.c -lm -L. -lmol -o test02 1>> compile.out 2>> compile.err
+   Found test02
+   Compilation succeeded
+Running test02
+   Pass!
+
+Test case 03 (compute_coords:  x1,y1,x2,y1)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test03.c -lm -L. -lmol -o test03 1>> compile.out 2>> compile.err
+   Found test03
+   Compilation succeeded
+Running test03
+   Pass!
+
+Test case 04 (compute_coords:  len)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test04.c -lm -L. -lmol -o test04 1>> compile.out 2>> compile.err
+   Found test04
+   Compilation succeeded
+Running test04
+   Pass!
+
+Test case 05 (compute_coords:  dx, xy)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test05.c -lm -L. -lmol -o test05 1>> compile.out 2>> compile.err
+   Found test05
+   Compilation succeeded
+Running test05
+   Pass!
+
+Test case 06 (bond_comp)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test06.c -lm -L. -lmol -o test06 1>> compile.out 2>> compile.err
+   Missing test06
+   Compilation generated errors:
+   /usr/bin/ld: /tmp/test06-a1991e.o: in function `main':
+test06.c:(.text+0x228): undefined reference to `bond_comp'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+Running test06
+   Run generated errors:
+   valgrind: ./test06: No such file or directory
+
+   Fail!
+
+Test case 07 (mol_xform 3)
+Compiling
+   clang -std=c99 -Wall -pedantic /home/socs/Grading//TestSuites/A2/test07.c -lm -L. -lmol -o test07 1>> compile.out 2>> compile.err
+   Found test07
+   Compilation succeeded
+Running test07
+   Pass!
+
+Test case 08 (Atom.__init__)
+Running test08.py
+   Pass!
+
+Test case 09 (Atom.svg 1)
+Running test09.py
+   Pass!
+
+Test case 10 (Atom.svg 2)
+Running test10.py
+   Pass!
+
+Test case 11 (Bond.__init__)
+Running test11.py
+   Pass!
+
+Test case 12 (Bond.svg 1)
+Running test12.py
+   Pass!
+
+Test case 13 (Bond.svg 2)
+Running test13.py
+   Pass!
+
+Test case 14 (Bond.svg 3)
+Running test14.py
+   Pass!
+
+Test case 15 (Bond.svg 4)
+Running test15.py
+   Pass!
+
+Test case 16 (Molecule.svg 1)
+Running test16.py
+   Pass!
+
+Test case 17 (Molecule.svg 2)
+Running test17.py
+   Pass!
+
+Test case 18 (Molecule.svg 3)
+Running test18.py
+   Pass!
+
+Test case 19 (Molecule.svg 4)
+Running test19.py
+   Pass!
+
+Test case 20 (Molecule.svg 5)
+Running test20.py
+   Pass!
+
+Test case 21 (Molecule.svg 6)
+Running test21.py
+   Pass!
+
+Test case 22 (Molecule.svg 7)
+Running test22.py
+   Pass!
+
+Test case 23 (Molecule.parse 1)
+Running test23.py
+   Pass!
+
+Test case 24 (Molecule.parse 2)
+Running test24.py
+   Pass!
+
+Test case 25 (Molecule.parse 3)
+Running test25.py
+   Pass!
+
+Test case 26 (Molecule.parse 4)
+Running test26.py
+   Pass!
+
+Test case 27 (do_GET 1)
+Running test27.py
+   Pass!
+
+Test case 28 (do_GET 2)
+Running test28.py
+   Pass!
+
+Test case 29 (do_POST 1)
+Running test29.py
+   Pass!
+
+Test case 30 (do_POST 2)
+Running test30.py
+   Pass!
+
+Test case 31 (do_POST 3)
+Running test31.py
+   Pass!
+
+Test case 32 (do_POST 4)
+Running test32.py
+   Pass!
+
+Found makefile
+Correct options
+Comments
+Indentation levels are: ['', '    ', '        ', '            ', '                ']
+Code is indented
+Assignment submitted by Eric Buys <ebuys@uoguelph.ca>
+   at: Mon Feb 27 21:44:26 2023
+   0 hours late
+   0 points penalty
