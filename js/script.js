@@ -8,7 +8,6 @@ $(document).ready(
             $.getJSON("elements.json", function(data){
                 let elements = data.elements;
                 let index = 0;
-                let currRow = 0;
                 let items = [];
                 let extras = [];
                 let extraRows = [];
@@ -56,8 +55,6 @@ $(document).ready(
                                     '</div>\n';
                         $(row).appendTo("#periodic-table");
                         items = [];
-
-                        currRow++;
                     } else if (extras.length == 14) {
 
                         extraRows[extraRowsIndex] = '<div class="' + extraRowsClass[extraRowsIndex] + '">\n' +
@@ -70,13 +67,42 @@ $(document).ready(
                 $(extraRows[0]).appendTo("#periodic-table");
                 $(extraRows[1]).appendTo("#periodic-table");
 
-                $(".cell").click(
-                    function() {
-                        $(this).toggleClass("inactive");
-                        $(this).toggleClass("active");
-                    }
-                );
+                //Click functionality for each element
+                $(".cell").click( function() {
+                    
+                    $(this).toggleClass("current");
+                    if($(this).hasClass("inactive")) {
+                        $(".form.backdrop").fadeTo(200, 1);
+                        $(".form.popup").css("display", "flex");
+                        
+                    } else {
+                        $.post("/remove-element",
+                            {
+                                number: $(".current").children(".number").html(),
+                            },
+                            function() {
+                                $(".current").toggleClass("inactive");
+                                $(".current").toggleClass("active");
+                                $(".current").toggleClass("current");
+                            }
+                        );
+                    }  
+                });
+                
             });
+            
+            //Loading Elements from Database
+            $.get("database-elements", function(data) {
+                let db_elements = data.split(',');
+
+                for(let i = 0; i < db_elements.length; i++) {
+                    $('div.cell div.number').filter( function() {
+                        return $(this).text() == db_elements[i];
+                    }).parent().addClass('active').removeClass('inactive');
+                }
+            }
+
+            );
         }
 
         $(".header-container").click(
@@ -85,6 +111,52 @@ $(document).ready(
                     height: "toggle",
                 }, 500);
             }
+            
+        )
+        
+        //Form Handler for Canel Button
+        $(".cancel").click(
+            function() {
+                $(".form.popup").css("display", "none");
+                $(".current").toggleClass("current");
+                $(".form.backdrop").fadeOut(200);
+            }
+        )
+        
+        //Form Handler for adding an element
+        $("#add-element").click(
+            function() {
+                //Checking if a radius was inputted
+                if($("#radius").val() == '') {
+                    $(".radius").addClass("invalid-input");
+                    
+                    setTimeout(function () { 
+                        $('.radius').removeClass('invalid-input');
+                    }, 1000);
+                } else {
+                    //Calling the POST Request
+                    $.post("/add-element",
+                        {
+                            number: $(".current").children(".number").html(),
+                            symbol: $(".current").children(".symbol").html(),
+                            name: $(".current").children(".name").html(),
+                            radius: $("#radius").val(),
+                            colour1: $("#colour1").val(),
+                            colour2: $("#colour1").val(),
+                            colour3: $("#colour1").val()
+                        },
+                        function() {
+                            $(".form.popup").css("display", "none");
+                            $(".current").toggleClass("inactive");
+                            $(".current").toggleClass("active");
+                            $(".current").toggleClass("current");
+                            $(".form.backdrop").fadeOut(200);
+                        }
+                    );
+                }
+
+                
+              }
         )
     }
 );

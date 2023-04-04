@@ -17,7 +17,7 @@ class Database:
         questionMarkStr = ", ".join(('?',)*len(values)) 
         insertStr = f"INSERT OR IGNORE INTO {table} VALUES (" + questionMarkStr + ")";
 
-        self.conn.execute(insertStr, values);
+        self.conn.execute(insertStr, values)
         self.conn.commit();
     
     def __del__(self):
