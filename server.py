@@ -67,9 +67,17 @@ class MyHandler( BaseHTTPRequestHandler ):
                                                                 WHERE MoleculeBond.MOLECULE_ID = ?
                                                         """, ((molecule[0]),)).fetchall();
                         
+                        MolDisplay.radius = db.radius();
+                        MolDisplay.element_name = db.element_name();
+                        MolDisplay.radial_gradients = db.radial_gradients();
+
+                        mol = db.load_mol(molecule[1]);
+                        mol.sort()
+                        
                         molecule_dict['name'] = molecule[1];
                         molecule_dict['num_atoms'] = len(molecule_atoms);
                         molecule_dict['num_bonds'] = len(molecule_bonds);
+                        molecule_dict['svg'] = mol.svg();
 
                         molecule_list.append(molecule_dict);
                     
@@ -145,9 +153,7 @@ class MyHandler( BaseHTTPRequestHandler ):
             selected_molecule = data['molecule_name'][0]
 
             self.send_response(200)
-            #self.send_header("Content-type", "text/html")
-            self.end_headers()
-            #self.wfile.write(bytes(mol.svg(), "utf-8"))    
+            self.end_headers() 
         
         elif self.path == '/rotate-mol':
             #Reading Data that was sent
@@ -170,49 +176,7 @@ class MyHandler( BaseHTTPRequestHandler ):
             self.send_header( "Content-type", contentType);
             self.send_header( "Content-length", len(content));
             self.end_headers();
-            self.wfile.write( bytes( content, "utf-8" ) );
-            
-        elif self.path == "/molecule":
-            self.send_response(200)
-            self.send_header("Content-type", "image/svg+xml")
-            self.end_headers()
-
-            #Reading sdf file
-            length = int(self.headers.get('content-length'))
-            reader = self.rfile.read(length).decode('utf-8').split("\n")
-            wrapper = io.TextIOWrapper(io.BufferedReader(io.BytesIO(bytes(("\n".join(reader[4:])), 'utf-8'))))
-
-            #Parsing sdf file
-            mol = MolDisplay.Molecule()
-            mol.parse(wrapper)
-
-            #Apply rotation to molecule
-            if(mol.atom_no != 0 or mol.bond_no != 0):
-                defaultOffset = 10 + mol.atom_no + mol.bond_no
-                rollOffset = defaultOffset + 4
-                pitchOffset = rollOffset + 4
-                yawOffset = pitchOffset + 4
-                
-                try:
-                    roll = int(reader[rollOffset])
-                except ValueError:
-                    roll = 0
-                
-                try:
-                    pitch = int(reader[pitchOffset])
-                except ValueError:
-                    pitch = 0
-                
-                try:
-                    yaw = int(reader[yawOffset])
-                except ValueError:
-                    yaw = 0
-
-                mol.rotate(roll, pitch, yaw)
-
-            #Outputting molecule to server
-            molecule.molsort(mol)
-            self.wfile.write(bytes(mol.svg(), "utf-8"))   
+            self.wfile.write( bytes( content, "utf-8" ) );   
 
         else:
             self.send_response( 404 );
@@ -222,11 +186,11 @@ class MyHandler( BaseHTTPRequestHandler ):
 
 if __name__ == "__main__":
     # db = molsql.Database(reset=True);
-    # db.create_tables();
-    # db['Elements'] = ( 1, 'H', 'Hydrogen', 'FFFFFF', '050505', '020202', 25 );
-    # db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
-    # db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
-    # db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
+    #db.create_tables();
+    db['Elements'] = ( 1, 'H', 'Hydrogen', 'FFFFFF', '050505', '020202', 25 );
+    db['Elements'] = ( 6, 'C', 'Carbon', '808080', '010101', '000000', 40 );
+    db['Elements'] = ( 7, 'N', 'Nitrogen', '0000FF', '000005', '000002', 40 );
+    db['Elements'] = ( 8, 'O', 'Oxygen', 'FF0000', '050000', '020000', 40 );
     #MolDisplay.element_name = db.element_name();
     #MolDisplay.header += db.radial_gradients();
     #MolDisplay.radius = db.radius();

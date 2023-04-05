@@ -3,11 +3,11 @@ import math;
 
 nightmareMode = True;
 radial_gradients = '';
-header = """<svg version="1.1" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">""";
+header = """<svg class="svg" version="1.1" viewBox="0 0 1000 1000" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">""";
 footer = """</svg>""";
 offsetx = 500;
 offsety = 500;
-DEFAULT_RADIUS = 40;
+DEFAULT_RADIUS = 25;
 
 def xCoordSVG(x):
     return x*100.0 + offsetx
@@ -88,7 +88,7 @@ class Bond:
         vectorLen = math.sqrt(pow(p2[0] - p1[0], 2) + pow(p2[1] - p1[1], 2) + pow(p2[2] - p1[2], 2))
         vector = [(p2[0] - p1[0])/vectorLen, (p2[1] - p1[1])/vectorLen, (p2[2] - p1[2])/vectorLen]
         
-        #Converting P! and P2 to SVG Coords
+        #Converting P1 and P2 to SVG Coords
         p1[0] = xCoordSVG(p1[0]);
         p2[0] = xCoordSVG(p2[0]);
         p1[1] = yCoordSVG(p1[1]);

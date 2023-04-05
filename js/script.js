@@ -8,6 +8,11 @@ $(document).ready(
             $("#colour3").val('');
         }
 
+        function clearMoleculeForm() {
+            $("#sdf_file").val('');
+            $("#file_name").val('');
+        }
+
         //Loads the Nav Bar
         $("#navbar-placeholder").load("navbar.html");
 
@@ -133,7 +138,6 @@ $(document).ready(
         });
 
         if($('#molecule-list').length) {
-            
             $.get("database-molecules", function(data) {
                 data = JSON.parse(data);
                 let index  = 0;
@@ -145,6 +149,7 @@ $(document).ready(
                         '   <div class="mol main sub-container">Name:' +
                         '       <span class="mol name">' + data[index].name + '</span>\n' +
                         '   </div>' +
+                        '   <div class="mol-preview">' + data[index].svg + '</div>' + 
                         '   <div class="mol sub-container">Num Atoms:' +
                         '       <span class="mol num-atoms">' + data[index].num_atoms + '</span>\n' +
                         '   </div>' +
@@ -173,6 +178,7 @@ $(document).ready(
             function() {
                 $(".form.popup").css("display", "none");
                 clearElementForm();
+                clearMoleculeForm();
                 $(".current").toggleClass("current");
                 $(".form.backdrop").fadeOut(200);
             }
@@ -189,12 +195,14 @@ $(document).ready(
             let sendPostRequest = true;
 
             //Checking if a file was uploaded
-            if($("#sdf_file").val() == '') {
+            if($("#sdf_file").val() == '' || !$("#sdf_file")[0].files[0].name.endsWith('.sdf')) {
                 sendPostRequest = false;
                 $("#sdf_file").parent().addClass("invalid-input");
+                $('.tooltiptext').addClass("tooltip-view");
 
                 setTimeout(function () { 
                     $("#sdf_file").parent().removeClass('invalid-input');
+                    $('.tooltiptext').removeClass("tooltip-view");
                 }, 1000);
             }
 
@@ -237,6 +245,7 @@ $(document).ready(
                                                             '   <div class="mol main sub-container">Name:' +
                                                             '       <span class="mol name">' + data[index].name + '</span>\n' +
                                                             '   </div>' +
+                                                            '   <div class="mol-preview">' + data[index].svg + '</div>' + 1
                                                             '   <div class="mol sub-container">Num Atoms:' +
                                                             '       <span class="mol num-atoms">' + data[index].num_atoms + '</span>\n' +
                                                             '   </div>' +
@@ -244,16 +253,17 @@ $(document).ready(
                                                             '       <span class="mol num-bonds">' + data[index].num_bonds + '</span>\n' +
                                                             '   </div>' +
                                                             '</div>\n';
+                                        clearMoleculeForm();
                                     }
                                     index++;
                                 });
                                 $(newMoleculeEntry).appendTo("#molecule-list");
 
                             })
-
+                            
                             $(".form.popup").css("display", "none");
-
                             $(".form.backdrop").fadeOut(200);
+
                         }
                     );
                 }
@@ -261,6 +271,8 @@ $(document).ready(
         });
 
         $(".rotate-form").submit(function(event) {
+            let sendPostRequest = true;
+
             let rollVal = $("#roll").val();
             let pitchVal = $("#pitch").val();
             let yawVal = $("#yaw").val();
@@ -275,23 +287,59 @@ $(document).ready(
                 yawVal = 0;
             }
 
-            console.log(rollVal)
-            console.log(pitchVal)
-            console.log(yawVal)
+            if($("#roll").val() < 0 || $("#roll").val() > 360 ) {
+                sendPostRequest = false;
+                $("#roll").parent().addClass("invalid-input");
+                $('.tooltiptext.roll').addClass("tooltip-view");
 
-            $.post("/rotate-mol",
-                {
-                    roll: rollVal,
-                    pitch: pitchVal,
-                    yaw: yawVal
-                },
-                function(data) {
-                    data = $.parseHTML(data)
-                    $("#molecule-placeholder").children().remove()
-                    $(data).appendTo($("#molecule-placeholder"))
-                }
-            )
-            
+                setTimeout(function () { 
+                    $("#roll").parent().removeClass('invalid-input');
+                    $('.tooltiptext.roll').removeClass("tooltip-view");
+                }, 1000);
+            }
+
+            if($("#pitch").val() < 0 || $("#pitch").val() > 360 ) {
+                sendPostRequest = false;
+                $("#pitch").parent().addClass("invalid-input");
+                $('.tooltiptext.pitch').addClass("tooltip-view");
+
+                setTimeout(function () { 
+                    $("#pitch").parent().removeClass('invalid-input');
+                    $('.tooltiptext.pitch').removeClass("tooltip-view");
+                }, 1000);
+            }
+
+            if($("#yaw").val() < 0 || $("#yaw").val() > 360 ) {
+                sendPostRequest = false;
+                $("#yaw").parent().addClass("invalid-input");
+                $('.tooltiptext.yaw').addClass("tooltip-view");
+
+                setTimeout(function () { 
+                    $("#yaw").parent().removeClass('invalid-input');
+                    $('.tooltiptext.yaw').removeClass("tooltip-view");
+                }, 1000);
+            }
+
+            console.log($("#roll").val())
+            console.log($("#pitch").val())
+            console.log($("#yaw").val())
+
+
+            if(sendPostRequest) {
+                $.post("/rotate-mol",
+                    {
+                        roll: rollVal,
+                        pitch: pitchVal,
+                        yaw: yawVal
+                    },
+                    function(data) {
+                        data = $.parseHTML(data)
+                        $("#molecule-placeholder").children().remove()
+                        $(data).appendTo($("#molecule-placeholder"))
+                    }
+                )
+
+            }            
             event.preventDefault();
         })
         

@@ -24,8 +24,7 @@ html, body {
 }
 
 #index-page {
-    background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
-    color: white;
+    color: black;
 }
 
 .navbar {
@@ -41,6 +40,7 @@ html, body {
     margin: 10px 5px;
     color: #fbfbfb;
     border-radius: 1vh;
+    cursor: pointer;
 }
 
 .button:hover {
@@ -68,6 +68,7 @@ html, body {
     padding: 1.5vh;
     border-radius: 1vh;
     user-select: none;
+    cursor: pointer;
 }
 
 .header:hover {
@@ -111,6 +112,12 @@ a, a:visited {
     padding: 2vh;
     min-width: 25%;
     max-width: 25%;
+    border-radius: 1vh;
+}
+
+.mol.container:hover {
+    background-color: #5509a1;
+    cursor: pointer;
 }
 
 .mol.main.sub-container {
@@ -150,6 +157,7 @@ a, a:visited {
 .cell:hover {
     transform: scale(1.25);
     transition: 150ms;
+    cursor: pointer;
 }
 
 .cell.inactive:hover {
@@ -177,6 +185,7 @@ a, a:visited {
 
 .cell.blank {
     visibility: hidden;
+    cursor: default;
 }
 
 .cell.active {
@@ -194,8 +203,6 @@ a, a:visited {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    min-height: 300px;
     padding: 4vh;
     padding-bottom: 2vh;
     background-color: #440088;
@@ -222,6 +229,7 @@ a, a:visited {
     background-color: #350169;
     border-radius: 1vh;
     margin-bottom: 2vh;
+    user-select: none;
 }
 
 label {
@@ -263,6 +271,8 @@ label {
 #molecule-placeholder {
     display: flex;
     justify-content: center;
+    width: inherit;
+    height: 50%;
 }
 
 .tooltiptext {
@@ -278,3 +288,46 @@ label {
 .tooltip-view {
     visibility: visible;
 }
+
+.svg {
+    width: 100%;
+    height: 100%;
+}
+
+.mol-view-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rotate-form {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2vh;
+    background-color: #5509a1;
+    border-radius: 1vh;
+}
+
+.rotate-form > div {
+    color: white;
+    font-size: 4vh;
+    padding: 1vw;
+    margin: auto;
+}
+
+.rotate-button {
+    font-size: 4vh;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    height: 75%;
+    margin-left: 1vw;
+}
+
