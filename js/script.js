@@ -320,11 +320,6 @@ $(document).ready(
                 }, 1000);
             }
 
-            console.log($("#roll").val())
-            console.log($("#pitch").val())
-            console.log($("#yaw").val())
-
-
             if(sendPostRequest) {
                 $.post("/rotate-mol",
                     {
@@ -341,6 +336,54 @@ $(document).ready(
 
             }            
             event.preventDefault();
+        })
+
+        $("#spin").click( function() {
+            for(let i = 0; i <= 360; i++) {
+                $.post("/rotate-mol",
+                    {
+                        roll: i,
+                        pitch: 0,
+                        yaw: 0
+                    },
+                    function(data) {
+                        data = $.parseHTML(data)
+                        $("#molecule-placeholder").children().remove()
+                        $(data).appendTo($("#molecule-placeholder"))
+                    }
+                )
+            }
+
+            for(let i = 0; i <= 360; i++) {
+                $.post("/rotate-mol",
+                    {
+                        roll: 0,
+                        pitch: i,
+                        yaw: 0
+                    },
+                    function(data) {
+                        data = $.parseHTML(data)
+                        $("#molecule-placeholder").children().remove()
+                        $(data).appendTo($("#molecule-placeholder"))
+                    }
+                )
+            }
+
+            for(let i = 0; i <= 360; i++) {
+                $.post("/rotate-mol",
+                    {
+                        roll: 0,
+                        pitch: 0,
+                        yaw: i
+                    },
+                    function(data) {
+                        data = $.parseHTML(data)
+                        $("#molecule-placeholder").children().remove()
+                        $(data).appendTo($("#molecule-placeholder"))
+                    }
+                )
+            }
+            
         })
         
         //Form Handler for adding an element

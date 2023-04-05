@@ -44,7 +44,7 @@ html, body {
 }
 
 .button:hover {
-    background-color: #5509a1;
+    background-color: #8957bc;
 }
 
 .title {
@@ -330,4 +330,3 @@ label {
     height: 75%;
     margin-left: 1vw;
 }
-
