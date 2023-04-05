@@ -166,9 +166,6 @@ class MyHandler( BaseHTTPRequestHandler ):
             MolDisplay.radial_gradients = db.radial_gradients();
 
             mol = db.load_mol(selected_molecule);
-            print(int(data['roll'][0]))
-            print(int(data['pitch'][0]))
-            print(int(data['yaw'][0]))
 
             mol.rotate(int(data['roll'][0]), int(data['pitch'][0]), int(data['yaw'][0]))
             mol.sort()
