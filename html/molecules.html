@@ -8,5 +8,28 @@
   </head>
   <body>
     <div id="navbar-placeholder"></div>
+    <div id="molecule-list"></div>
+    <div class="upload-container">
+      <div class="header upload">Upload SDF</div>
+    </div>
+    <div class="form backdrop">
+      <form class="form popup">
+        <div class="form title">Upload SDF</div>
+      
+        <div class="file form container">
+          <input class="form input" type="file" id="sdf_file" name="filename"/>
+        </div>
+
+        <div class="form text container">
+          <label class="form text" for="file-name">File Name:</label>
+          <input class="form input" type="text" id="file_name" name="file-name"/>
+        </div>
+
+        <div class="button-row">
+          <div class="button" id="upload-molecule">Upload</div>
+          <div class="button cancel">Cancel</div>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

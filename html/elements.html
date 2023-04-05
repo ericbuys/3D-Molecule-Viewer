@@ -13,8 +13,9 @@
         <div class="form title">Update Element</div>
       
         <div class="radius form container">
+          <div class="tooltiptext">Only values from 25 to 100 are allowed</div>
           <label class="form text" for="radius">Radius:</label>
-          <input class="form input" type="number" id="radius" name="radius"/>
+          <input class="form input" type="number" id="radius" name="radius" required/>
         </div>
 
         <div class="form colours">
@@ -36,17 +37,16 @@
           <div class="button" id="add-element">Add</div>
           <div class="button cancel">Cancel</div>
         </div>
-
       </form>
     </div>
     <div>
       <div class="header-container">
-        <div class="header">Periodic Table</div>
+        <div class="header resizable">Periodic Table</div>
       </div>
       <div id="periodic-table"></div>
     </div>
-    <div class="header-container">
+    <!--<div class="header-container">
       <div class="header">Detailed List</div>
-    </div>
+    </div>-->
   </body>
 </html>

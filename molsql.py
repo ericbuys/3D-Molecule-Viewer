@@ -18,9 +18,10 @@ class Database:
         insertStr = f"INSERT OR IGNORE INTO {table} VALUES (" + questionMarkStr + ")";
 
         self.conn.execute(insertStr, values)
-        self.conn.commit();
+        #self.conn.commit();
     
     def __del__(self):
+        self.conn.commit();
         self.conn.close()
     
     def create_tables(self):
@@ -205,7 +206,7 @@ class Database:
         for radius in radiusData:
             radiusDict[radius[0]] = radius[1];
 
-        return radiusDict
+        return radiusDict;
     
     def element_name(self):
         #Retrieve Element Data from Table
@@ -218,6 +219,8 @@ class Database:
         elementDict = {}
         for element in elementData:
             elementDict[element[0]] = element[1];
+        
+        elementDict['DEFAULT'] = "DEFAULT";
 
         return elementDict
     
@@ -237,7 +240,14 @@ class Database:
                 <stop offset="50%%" stop-color="#%s"/>
                 <stop offset="100%%" stop-color="#%s"/>
             </radialGradient>""" % (element[0], element[1], element[2], element[3]);
-        
+
+        radialGradientSVG += """
+            <radialGradient id="%s" cx="-50%%" cy="-50%%" r="220%%" fx="20%%" fy="20%%">
+                <stop offset="0%%" stop-color="#%s"/>
+                <stop offset="50%%" stop-color="#%s"/>
+                <stop offset="100%%" stop-color="#%s"/>
+            </radialGradient>""" % ("DEFAULT", "bdbbd2", "b55dff", "4d05a7")
+
         return radialGradientSVG
 
 if __name__ == "__main__":

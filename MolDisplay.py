@@ -2,10 +2,12 @@ import molecule;
 import math;
 
 nightmareMode = True;
+radial_gradients = '';
 header = """<svg version="1.1" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">""";
 footer = """</svg>""";
 offsetx = 500;
 offsety = 500;
+DEFAULT_RADIUS = 40;
 
 def xCoordSVG(x):
     return x*100.0 + offsetx
@@ -27,8 +29,12 @@ class Atom:
     def svg(self):
         xCoord = xCoordSVG(self.atom.x)
         yCoord = yCoordSVG(self.atom.y)
-        rad = radius[self.atom.element]
-        col = element_name[self.atom.element]
+        rad = radius.get(self.atom.element, DEFAULT_RADIUS)
+        
+        try:
+            col = element_name[self.atom.element]
+        except KeyError:
+            col = element_name["DEFAULT"];
 
         return '  <circle cx="%.2f" cy="%.2f" r="%d" fill="url(#%s)"/>\n' % (xCoord, yCoord, rad, col)
 
@@ -60,8 +66,8 @@ class Bond:
         #Retrieving Essential Bond Data
         atom1 = self.bond.get_atom(self.bond.a1)
         atom2 = self.bond.get_atom(self.bond.a2)
-        atom1Radius = radius[atom1.element]
-        atom2Radius = radius[atom2.element]
+        atom1Radius = radius.get(atom1.element, DEFAULT_RADIUS)
+        atom2Radius = radius.get(atom2.element, DEFAULT_RADIUS)
 
         #Updating Radius to Make Bond Fill Empty Space
         atom1Radius = math.sqrt(atom1Radius*atom1Radius - bondWidth*bondWidth)
@@ -132,7 +138,12 @@ class Bond:
         stopColours = []
         gradPoints = []
         
-        slope = (p2[1] - p1[1])/(p2[0]-p1[0])
+        #Accounting for divide by zero
+        if((p2[0]-p1[0]) == 0):
+            slope = p2[1] - p1[1]
+        else:
+            slope = (p2[1] - p1[1])/(p2[0]-p1[0])
+
         if(slope < 0):
             stopColours = ['#454545', '#606060', '#454545', '#252525']
             if(y11 > y12):
@@ -170,7 +181,8 @@ class Molecule(molecule.molecule):
         return returnStr
     
     def svg(self):
-        tempList = [header]
+        updatedHeader = header + radial_gradients;
+        tempList = [updatedHeader]
 
         i = 0
         j = 0
@@ -212,6 +224,7 @@ class Molecule(molecule.molecule):
     
     def parse(self, file):
         fileContents = file.read().split("\n")
+        print(fileContents)
         if(len(fileContents) < 4):
             return
 
