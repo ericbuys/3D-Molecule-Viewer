@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Molecule Viewer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"> </script>
+    <script src="script.js" /></script>
+    <link rel="stylesheet" type='text/css' href="style.css">
+  </head>
+  <body>
+    <div id="navbar-placeholder"></div>
+    <div class="form backdrop">
+      <form class="form popup">
+        <div class="form title">Update Element</div>
+      
+        <div class="radius form container">
+          <div class="tooltiptext">Only values from 25 to 100 are allowed</div>
+          <label class="form text" for="radius">Radius:</label>
+          <input class="form input" type="number" id="radius" name="radius" required/>
+        </div>
+
+        <div class="form colours">
+          <div class="form container">
+            <label class="form text" for="colour1">Colour 1:</label>
+            <input class="form input" type="color" id="colour1" name="colour1"/>
+          </div>
+          <div class="form container">
+            <label class="form text" for="colour2">Colour 2:</label>
+            <input class="form input" type="color" id="colour2" name="colour2"/>
+          </div>
+          <div class="form container">
+            <label class="form text" for="colour3">Colour 3:</label>
+            <input class="form input" type="color" id="colour3" name="colour3"/>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <div class="button" id="add-element">Add</div>
+          <div class="button cancel">Cancel</div>
+        </div>
+      </form>
+    </div>
+    <div>
+      <div class="header-container">
+        <div class="header resizable">Periodic Table</div>
+      </div>
+      <div id="periodic-table"></div>
+    </div>
+    <!--<div class="header-container">
+      <div class="header">Detailed List</div>
+    </div>-->
+  </body>
+</html>

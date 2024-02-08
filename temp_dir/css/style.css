@@ -1,0 +1,331 @@
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overscroll-behavior: none;
+    /*overflow: hidden;*/
+}
+
+#index-page {
+    color: black;
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    background-image: linear-gradient(to right, #440088 , #6d00a8);
+}
+
+.button {
+    font-size: 3.25vh;
+    background-color: #350169;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    color: #fbfbfb;
+    border-radius: 1vh;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #8957bc;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 12vh;
+}
+
+.upload-container, .header-container {
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    display: inline-block;
+    font-size: 6vh;
+    margin: 3vh;
+    background-color: #d4d4d4;
+    padding: 1.5vh;
+    border-radius: 1vh;
+    user-select: none;
+    cursor: pointer;
+}
+
+.header:hover {
+    background-color: #e7e7e7;
+}
+
+a, a:visited {
+    color: inherit;
+    text-decoration: none;
+    
+}
+
+#periodic-table {
+    display: flex;
+    flex-direction: column;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.row.extras {
+    margin-top: 2vh;
+}
+
+#molecule-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.mol.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #440088;
+    color: white;
+    margin: 4vh;
+    padding: 2vh;
+    min-width: 25%;
+    max-width: 25%;
+    border-radius: 1vh;
+}
+
+.mol.container:hover {
+    background-color: #5509a1;
+    cursor: pointer;
+}
+
+.mol.main.sub-container {
+    font-size: 4vh;
+}
+
+.mol.main .mol{
+    font-size: 3.5vh;
+    font-weight: 600;
+}
+
+.mol.sub-container {
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 3vh;
+}
+
+.mol {
+    font-size: 2.5vh;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.cell {
+    flex: 0 0 4.5vw;
+    width: 0;
+    text-align: center;
+    color: white;
+    border-radius: 0.5vh;
+    margin: 1px;
+    padding: 5px;
+    font-family: monospace;
+    user-select: none;
+}
+
+.cell:hover {
+    transform: scale(1.25);
+    transition: 150ms;
+    cursor: pointer;
+}
+
+.cell.inactive:hover {
+    background-color: #7a7a7a;
+}
+.cell.active:hover {
+    background-color: #5600ac;
+}
+
+.cell .number {
+    text-align: left;
+    font-size: 1.25vh;
+}
+
+.cell .symbol {
+    font-size: 4vh;
+}
+
+.cell .name {
+    font-size: 1.25vh;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell.blank {
+    visibility: hidden;
+    cursor: default;
+}
+
+.cell.active {
+    background-color: #440088;
+}
+
+.cell.inactive {
+    background-color: #555555;
+}
+
+.form.popup {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 4vh;
+    padding-bottom: 2vh;
+    background-color: #440088;
+    color: white;
+    border-radius: 1vh;
+}
+
+.form.backdrop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.149);
+    backdrop-filter: blur(2px);
+    display: none;
+}
+
+.form.title {
+    font-size: 5vh;
+    padding: 2vh;
+    font-weight: bolder;
+    background-color: #350169;
+    border-radius: 1vh;
+    margin-bottom: 2vh;
+    user-select: none;
+}
+
+label {
+    display: inline-block;
+}
+
+.form.text {
+    font-size: 3.25vh;
+    padding: 1vh;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.form.input {
+    width: 100%;
+    font-size: 2.5vh;
+}
+
+.form.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colours {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.invalid-input {
+    animation: shake 1s;
+}
+
+#molecule-placeholder {
+    display: flex;
+    justify-content: center;
+    width: inherit;
+    height: 50%;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: #6900d264;
+    color: #fff;
+    position: absolute;
+    font-size: 2vh;
+    padding: 1vh;
+    transform: translate(0%, calc(100% * -1));
+}
+
+.tooltip-view {
+    visibility: visible;
+}
+
+.svg {
+    width: 100%;
+    height: 100%;
+}
+
+.mol-view-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rotate-form {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2vh;
+    background-color: #5509a1;
+    border-radius: 1vh;
+}
+
+.rotate-form > div {
+    color: white;
+    font-size: 4vh;
+    padding: 1vw;
+    margin: auto;
+}
+
+.rotate-button {
+    font-size: 4vh;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    margin-left: 1vw;
+}

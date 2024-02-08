@@ -213,7 +213,7 @@ void molappend_bond(molecule *molecule, bond *bond) {
 //Sorts the atom_ptrs and bond_ptrs array in a molecule
 void molsort(molecule *molecule) {
     qsort(molecule->atom_ptrs, molecule->atom_no, sizeof(struct atom*), atom_cmp);
-    qsort(molecule->bond_ptrs, molecule->bond_no, sizeof(struct bond*), bond_cmp);
+    qsort(molecule->bond_ptrs, molecule->bond_no, sizeof(struct bond*), bond_comp);
 }
 
 //Atom compare function for qsort
@@ -233,7 +233,7 @@ int atom_cmp(const void *a, const void *b) {
 }
 
 //Bond compare function for qsort
-int bond_cmp(const void *a, const void *b) {
+int bond_comp(const void *a, const void *b) {
     bond *a_ptr, *b_ptr;
     
     a_ptr = *(struct bond **)a;

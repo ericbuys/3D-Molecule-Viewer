@@ -59,7 +59,7 @@ void mol_xform(molecule *molecule, xform_matrix matrix);
 
 //Helper Functions
 int atom_cmp(const void *a, const void *b);
-int bond_cmp(const void *a, const void *b);
+int bond_comp(const void *a, const void *b);
 double degToRad(unsigned short deg);
 
 //Nightmare Mode

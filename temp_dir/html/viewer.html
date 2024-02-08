@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Molecule Viewer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"> </script>
+    <script src="script.js" /></script>
+    <link rel="stylesheet" type='text/css' href="style.css">
+  </head>
+    <div id="navbar-placeholder"></div>
+    <div class="mol-view-container">
+      <form class="rotate-form" enctype="multipart/form-data" method="post">
+        <div class="input-container">
+          <div class="tooltiptext roll">Only values from 0 to 360 allowed</div>
+          <label for="roll">Roll </label>
+          <input class="input" type="number" id="roll" name="roll"/>
+        </div>
+        <div class="input-container">
+          <div class="tooltiptext pitch">Only values from 0 to 360 allowed</div>
+          <label for="pitch">Pitch </label>
+          <input class="input" type="number" id="pitch" name="pitch"/>
+        </div>
+        <div class="input-container">
+          <div class="tooltiptext yaw">Only values from 0 to 360 allowed</div>
+          <label for="yaw">Yaw </label>
+          <input class="input" type="number" id="yaw" name="yaw"/>
+        </div>
+        <div class="input-container">
+          <input class="rotate-button" type="submit" value="Rotate"/>
+          <div class="button" id="spin">Spin</div>
+        </div>
+      </form>
+      <div id="molecule-placeholder"></div>
+    </div>
+  </body>
+</html>

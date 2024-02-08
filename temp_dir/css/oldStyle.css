@@ -1,0 +1,77 @@
+:root {
+    --main-circle-size: 60vh;
+    --main-circle-text: calc(var(--main-circle-size) * 0.2);
+    --small-circle-proportion: 0.5;
+    --border-proportion: 0.04;
+    --rect-width-proportion: 0.125; 
+    --rect-length-proportion: 0.3; 
+}   
+
+html, body {
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+.container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;   
+    background: #609e0a;
+    border: solid #000; 
+}
+
+.circle > span {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.circle.big {
+    height: var(--main-circle-size);
+    width: var(--main-circle-size);
+    border-width: calc(var(--main-circle-size)*var(--border-proportion));
+}
+
+.circle.big > span {
+    text-align: center;
+    font-size: var(--main-circle-text);
+}
+
+.circle.small {
+    height: calc(var(--main-circle-size)*var(--small-circle-proportion));
+    width: calc(var(--main-circle-size)*var(--small-circle-proportion));
+    border-width: calc(var(--main-circle-size)*var(--small-circle-proportion)*var(--border-proportion));
+}
+
+.circle.small > span {
+    text-align: center;
+    font-size: calc(var(--main-circle-text)*var(--small-circle-proportion));
+}
+
+
+.rectangle {
+    width: calc(var(--main-circle-size)*var(--rect-width-proportion));
+    height: calc(var(--main-circle-size)*var(--rect-length-proportion));
+    background: red;
+    /*margin-top: -10px;
+    margin-bottom: -10px;
+    
+    z-index: -1;*/
+}
+
+/*
+.rectangle.skew {
+    transform: rotate(-45deg);
+    height: calc(var(--main-circle-size)*var(--rect-length-proportion));
+    position: relative;
+    top: -50px;
+    left: 50px;
+}*/
