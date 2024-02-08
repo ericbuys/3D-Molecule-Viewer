@@ -29,17 +29,36 @@ void atomget(atom *atom, char element[3], double *x, double *y, double *z) {
 }
 
 //Sets the values of a bond
-void bondset(bond *bond, atom *a1, atom *a2, unsigned char epairs) {
-    bond->a1 = a1;
-    bond->a2 = a2;
-    bond->epairs = epairs;
+void bondset( bond *bond, unsigned short *a1, unsigned short *a2, atom **atoms, unsigned char *epairs ) {
+    bond->a1 = *a1;
+    bond->a2 = *a2;
+    bond->atoms = *atoms;
+    bond->epairs = *epairs;
+
+    compute_coords(bond);
 }
 
 //Gets the values of a bond (pass by reference)
-void bondget(bond *bond, atom **a1, atom **a2, unsigned char *epairs) {
+void bondget( bond *bond, unsigned short *a1, unsigned short *a2, atom **atoms, unsigned char *epairs ) {
     *a1 = bond->a1;
     *a2 = bond->a2;
     *epairs = bond->epairs;
+    *atoms = bond->atoms;
+}
+
+//Calculates and sets the numerical values of a bond
+void compute_coords( bond *bond ) {
+    atom atomOne = bond->atoms[bond->a1];
+    atom atomTwo = bond->atoms[bond->a2];
+
+    bond->x1 = atomOne.x;
+    bond->x2 = atomTwo.x;
+    bond->y1 = atomOne.y;
+    bond->y2 = atomTwo.y;
+    bond->z = (atomOne.z + atomTwo.z)/2;
+    bond->len = sqrt(pow(( atomTwo.x - atomOne.x), 2) + pow((atomTwo.y - atomOne.y), 2));
+    bond->dx = (atomTwo.x - atomOne.x)/bond->len;
+    bond->dy = (atomTwo.y - atomOne.y)/bond->len;
 }
 
 //Allocates sufficient space for a molecule
@@ -105,17 +124,7 @@ molecule *molcopy(molecule *src) {
     //Appending all the bonds
     for(int i = 0; i < src->bond_no; i++) {
         molappend_bond(newMol, &(src->bonds[i]));
-    }
-
-    //Reassinging which atoms the bonds point to in the newMol
-    int indexA1, indexA2;
-
-    for(int i = 0; i < src->bond_no; i++) {
-        indexA1 = (src->bonds[i].a1 - src->atoms);
-        indexA2 = (src->bonds[i].a2 - src->atoms);
-
-        newMol->bonds[i].a1 = &newMol->atoms[indexA1];
-        newMol->bonds[i].a2 = &newMol->atoms[indexA2];
+        newMol->bonds[i].atoms = newMol->atoms;
     }
 
     return newMol;
@@ -147,8 +156,6 @@ void molappend_atom(molecule *molecule, atom *atom) {
             molecule->atom_max *= 2;
         }
 
-        struct atom *oldAddr = molecule->atoms;
-
         //Reallocating space for atoms and atom_ptrs
         molecule->atoms = realloc(molecule->atoms, sizeof(struct atom)*(molecule->atom_max));
         molecule->atom_ptrs = realloc(molecule->atom_ptrs, sizeof(struct atom*)*(molecule->atom_max));
@@ -161,19 +168,6 @@ void molappend_atom(molecule *molecule, atom *atom) {
             //Reassigning atom ptrs for when realloc moves the atoms array
             for(int i = 0; i < molecule->atom_no; i++) {
                 molecule->atom_ptrs[i] = &(molecule->atoms[i]);
-            }
-        }
-
-        //Reassigning bonds if address of atoms was moved due to realloc
-        if(oldAddr != molecule->atoms) {
-            int indexA1, indexA2;
-
-            for(int i = 0; i < molecule->bond_no; i++) {
-                indexA1 = (molecule->bonds[i].a1 - oldAddr);
-                indexA2 = (molecule->bonds[i].a2 - oldAddr);
-
-                molecule->bonds[i].a1 = &molecule->atoms[indexA1];
-                molecule->bonds[i].a2 = &molecule->atoms[indexA2];
             }
         }
     }
@@ -245,12 +239,9 @@ int bond_cmp(const void *a, const void *b) {
     a_ptr = *(struct bond **)a;
     b_ptr = *(struct bond **)b;
 
-    double a_ptrAvg = (a_ptr->a1->z + a_ptr->a2->z)/2;
-    double b_ptrAvg = (b_ptr->a1->z + b_ptr->a2->z)/2;
-
-    if(a_ptrAvg > b_ptrAvg) {
+    if(a_ptr->z > b_ptr->z) {
         return 1;
-    } else if (a_ptrAvg == b_ptrAvg) {
+    } else if (a_ptr->z == b_ptr->z) { //Potentially change to fabs(a - b) < epsilon
         return 0;
     } else {
         return -1;
@@ -325,6 +316,10 @@ void mol_xform(molecule *molecule, xform_matrix matrix) {
         molecule->atoms[i].x = newX;
         molecule->atoms[i].y = newY;
         molecule->atoms[i].z = newZ;
+    }
+
+    for(int i = 0; i < molecule->bond_no; i++) {
+        compute_coords(molecule->bond_ptrs[i]);
     }
 }
 
