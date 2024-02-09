@@ -11,13 +11,13 @@ mol.o: mol.c mol.h
 	$(CC) $(CFLAGS) -fPIC -c mol.c -o mol.o
 
 _molecule.so: molecule_wrap.o
-	$(CC) $(CFLAGS) molecule_wrap.o -lmol -lpython3.7m -L. -L/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu -dynamiclib -shared -o _molecule.so
+	$(CC) $(CFLAGS) molecule_wrap.o -lmol -lpython3.10 -L. -L/Library/Frameworks/Python.framework/Versions/3.10/lib -dynamiclib -shared -o _molecule.so
 
 molecule_wrap.o: molecule_wrap.c
-	$(CC) $(CFLAGS) -fPIC -I/usr/include/python3.7m -c molecule_wrap.c -o molecule_wrap.o
+	$(CC) $(CFLAGS) -fPIC -I/Library/Frameworks/Python.framework/Versions/3.10/include/python3.10/ -c molecule_wrap.c -o molecule_wrap.o
 
 molecule_wrap.c: molecule.i
-	swig3.0 -python molecule.i
+	swig -python molecule.i
 
 clean: 
 	rm *.o *.so molecule_wrap.c molecule.py
